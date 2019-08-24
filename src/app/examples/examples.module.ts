@@ -13,12 +13,12 @@ import { ExamplesRoutingModule } from './examples-routing.module';
 import { ExamplesComponent } from './examples/examples.component';
 
 import { AuthenticatedComponent } from './authenticated/authenticated.component';
-import { CrudComponent } from './crud/components/crud.component'
+import { CrudComponent } from './crud/components/crud.component';
 
 import { ExamplesEffects } from './examples.effects';
 import { JeuxEffects } from './authenticated/jeu.effects';
 import { JeuServiceService } from './authenticated/jeu-service.service';
-import { BooksEffects } from './crud/books.effects';
+import { LogosEffects } from './crud/logos.effects';
 import { GearsComponent } from './gears/gears.component';
 
 import { SHARED_VISUALS } from './visuals/shared';
@@ -38,12 +38,7 @@ import { DataService } from './gears/data.service';
       },
       isolate: true
     }),
-    EffectsModule.forFeature([
-      ExamplesEffects,
-      JeuxEffects,
-      BooksEffects
-
-    ])
+    EffectsModule.forFeature([ExamplesEffects, JeuxEffects, LogosEffects])
   ],
   declarations: [
     GraphComponent,

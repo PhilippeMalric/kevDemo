@@ -1,17 +1,18 @@
 <div class="container" rtl>
   <h1 *ngIf="authName$ | async">{{authName$ | async}}</h1>
-  <h2>Articles, considérations et l'affirmation de la constitution</h2>
-  <h3>À travailler</h3>
+  <h2>Liste des logos!</h2>
   <h3 *ngIf="myLogos.length == 0">Veuillez patientez (quelques secondes (10 secondes maximum!))</h3>
   <div class="row">
     <div class="col-md-6">
 
-      <mat-card *ngFor="let book of myLogos;let i = index; trackBy:trackByIndex;"
+      <mat-card *ngFor="let logo of myLogos;let i = index; trackBy:trackByIndex;"
          data-testid="crud-item"
         [ngClass]="myLogos[i].style + ' routeAnimationsElements'" >
-        <img mat-card-image [src]="book.url_img" [alt]="book.texte" (click)="select(book)">
+        <div class="divImg">
+            <img mat-card-image class="image" [src]="logo.url_img" [alt]="logo.texte" (click)="select(logo)">
+        </div>
         <div class="flex">
-          <h4  class="col-sm-10" data-testid="item-title">{{book.texte}}</h4>
+          <h4  class="col-sm-10" data-testid="item-title">{{logo.texte}}</h4>
           <mat-slider class="col-sm-2"
           class="example-margin"
           [max]="5"
@@ -20,21 +21,28 @@
           [thumbLabel]="true"
           [tickInterval]="1"
           [vertical]="true"
-          [(ngModel)]="book.niveauDaccord"
+          [(ngModel)]="logo.niveauDaccord"
           >
           </mat-slider>
         </div>
         <mat-form-field class="example-full-width">
-          <textarea matInput maxlength="300" name="text-{{i}}"  placeholder="Commentaires"  [(ngModel)]="book.commentaire"></textarea>
+          <textarea matInput maxlength="300" name="text-{{i}}"  placeholder="Commentaires"  [(ngModel)]="logo.commentaire"></textarea>
         </mat-form-field>
-        <button mat-raised-button (click)="launch(book)">Envoyer</button>
+        <mat-form-field class="example-full-width">
+          <textarea matInput maxlength="10" name="x-{{i}}"  placeholder="x"  [(ngModel)]="logo.x"></textarea>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <textarea matInput maxlength="10" name="y-{{i}}"  placeholder="y"  [(ngModel)]="logo.y"></textarea>
+        </mat-form-field>
+        <button mat-raised-button (click)="launch(logo)">Envoyer</button>
       </mat-card>
+
 
     </div>
     <div class="col-md-6">
       <div id="addButton">
         <button type="button" mat-fab color="primary" class="add" [ngClass]="routeAnimationsElements"
-        *ngIf="!isEditing" (click)="addNew(bookForm)" data-testid="add-crud">
+        *ngIf="!isEditing" (click)="addNew(logoForm)" data-testid="add-crud">
         <fa-icon icon="plus"></fa-icon>
       </button>
     </div>
@@ -68,7 +76,7 @@
         </span>
       </span>
 
-      <form #bookForm="ngForm" [formGroup]="logoFormGroup" [style.display]="isEditing ? 'block' : 'none'"
+      <form #logoForm="ngForm" [formGroup]="logoFormGroup" [style.display]="isEditing ? 'block' : 'none'"
         [ngClass]="routeAnimationsElements">
         <div class="row">
           <mat-form-field class="col">
@@ -89,7 +97,7 @@
               <input matInput placeholder="url image"
               formControlName="url_img" required autofocus>
               <mat-error *ngIf="logoFormGroup.get('url_img').invalid">
-                L'url deu logo est necessaire
+                L'url des image des logos est necessaire
               </mat-error>
 
             </mat-card>

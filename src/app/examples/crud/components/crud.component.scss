@@ -8,14 +8,12 @@ mat-card {
   cursor: pointer;
 }
 
-/deep/ mat-slider{
+/deep/ mat-slider {
   width: 100%;
 }
 
-/deep/ mat-form-field{
-
+/deep/ mat-form-field {
   width: 100%;
-
 }
 .mat-fab {
   .fa-icon {
@@ -24,42 +22,50 @@ mat-card {
   }
 }
 
+.image {
+  width: 300px;
+}
+
+.divImg {
+  margin: auto;
+  width: fit-content;
+}
+
 .add {
 }
 
-#addButton{
+#addButton {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom:30px;
+  margin-bottom: 30px;
   margin-top: 20px;
 }
 
 .col-md-6 {
-
   margin-bottom: 20px;
 }
 
-.red{
+.red {
   background-color: rgb(250, 150, 150);
 }
 
-.blue{
+.blue {
   background-color: rgb(121, 140, 248);
 }
 
-.red2{
+.red2 {
   background-color: rgb(253, 205, 205);
 }
 
-.blue2{
+.blue2 {
   background-color: rgb(172, 184, 255);
 }
 
-.green{
+.green {
   background-color: rgb(160, 253, 168);
 }
 
-.flex{
-  display:flex;
+.flex {
+  display: flex;
 }

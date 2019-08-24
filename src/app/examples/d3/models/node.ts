@@ -1,4 +1,4 @@
-import {AppConfig} from '../../../configs/app.config';
+import { AppConfig } from '../../../configs/app.config';
 
 export class Node implements d3.SimulationNodeDatum {
   // optional - defining optional implementation properties - required for relevant typing assistance
@@ -9,40 +9,40 @@ export class Node implements d3.SimulationNodeDatum {
   vy?: number;
   fx?: number | null;
   fy?: number | null;
-  num?: string |null;
-  img?: string| null;
-  texte?: string| null;
-  label?: string| null;
-  box?: any| null;
+  num?: string | null;
+  img?: string | null;
+  texte?: string | null;
+  label?: string | null;
+  box?: any | null;
 
   id: string;
   linkCount: number = 0;
   niveau: any;
 
-  constructor(id,img,label,niveau) {
+  constructor(id, img, label, niveau, x, y) {
     this.id = id;
     this.img = img;
     this.label = label;
-    this.niveau = niveau
-    this.box = {}
+    this.niveau = niveau;
+    this.box = {};
+    this.x = x;
+    this.y = y;
   }
 
   normal = () => {
     return Math.sqrt(this.linkCount / AppConfig.N);
-  }
+  };
 
   get r() {
     return 50 * this.normal() + 10;
   }
 
   get fontSize() {
-    return (30 * this.normal() + 10) + 'px';
+    return 30 * this.normal() + 10 + 'px';
   }
 
   get color() {
     let index = Math.floor(AppConfig.SPECTRUM.length * this.normal());
     return AppConfig.SPECTRUM[index];
   }
-
-
 }

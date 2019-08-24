@@ -2,53 +2,51 @@ import { Injectable } from '@angular/core';
 import { Link } from '../d3';
 import { Node } from '../d3';
 import { Subject, BehaviorSubject } from 'rxjs';
-import { BOOKS_KEY } from '../crud/books.effects';
+import { Logos_KEY } from '../crud/logos.effects';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Store } from '@ngrx/store';
 import { State } from '../examples.state';
-import { tap, map } from 'rxjs/operators';
-import { Logo } from '../crud/books.model';
-import { ActionBooksUpsertAll } from '../crud/books.actions';
+import { tap, map, take } from 'rxjs/operators';
+import { Logo } from '../crud/logos.model';
+import { ActionLogosUpsertAll } from '../crud/logos.actions';
 
 @Injectable()
 export class DataService {
+  links: Link[];
 
-  links:Link[]
+  scian: any;
+  cnp: any;
+  cnpToScian: any;
 
-  scian:any
-  cnp:any
-  cnpToScian:any
+  logoKey: Subject<string>;
 
-  logoKey:Subject<string>
-
-  constructor(
-    private afs: AngularFirestore,
-    public store: Store<State>,) {
-    this.logoKey = new BehaviorSubject<string>(BOOKS_KEY)
-
+  constructor(private afs: AngularFirestore, public store: Store<State>) {
+    this.logoKey = new BehaviorSubject<string>(Logos_KEY);
   }
 
-  click(){
-    console.log("Hello")
+  click() {
+    console.log('Hello');
   }
 
-fireStoreObservable(key:string){
-  return this.afs
-    .collection('logos')
-    .doc(key)
-    .valueChanges()
-    .pipe(
-      tap((books: Logo[]) => {
-        console.log('!!dispatch : ');
-        console.log(books);
-      }),
-      map((obj: any) => obj.examples.books),
-      map((obj: any) => obj.entities),
+  fireStoreObservable(key: string) {
+    console.log('Key2 : ' + key);
 
-      map(entities => {
-        return Object.keys(entities).map((k: string) => entities[k]);
-      }),
-      /*
+    return this.afs
+      .collection('logos')
+      .doc(key)
+      .valueChanges()
+      .pipe(
+        tap((logos: Logo[]) => {
+          console.log('!!dispatch : ');
+          console.log(logos);
+        }),
+        map((obj: any) => obj.examples.logos),
+        map((obj: any) => obj.entities),
+
+        map(entities => {
+          return Object.keys(entities).map((k: string) => entities[k]);
+        }),
+        /*
       map((books:Book[]) => {
         console.log("books11");
         console.log(books);
@@ -82,17 +80,21 @@ fireStoreObservable(key:string){
       })
       ,
       */
-      tap((logos: Logo[]) => {
-
-        console.log('dispatch : ');
-        let logos2 = logos.map(
-          (book)=>new Node(book.id,book.url_img,book.texte,book.niveauDaccord)
-        )
-        this.store.dispatch(
-          new ActionBooksUpsertAll({ books: logos })
-        );
-      })
-      )
-}
-
+        tap((logos: Logo[]) => {
+          console.log('dispatch : ');
+          let logos2 = logos.map(
+            logo =>
+              new Node(
+                logo.id,
+                logo.url_img,
+                logo.texte,
+                logo.niveauDaccord,
+                logo.x,
+                logo.y
+              )
+          );
+          this.store.dispatch(new ActionLogosUpsertAll({ logos: logos }));
+        })
+      );
+  }
 }

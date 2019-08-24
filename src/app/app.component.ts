@@ -30,9 +30,7 @@ import {
   animations: [routeAnimations]
 })
 export class AppComponent implements OnInit {
-
-  @ViewChild('audioOption') audioPlayerRef: ElementRef;
-
+  //@ViewChild('audioOption') audioPlayerRef: ElementRef;
 
   isProd = env.production;
   envName = env.envName;
@@ -42,8 +40,7 @@ export class AppComponent implements OnInit {
   languages = ['en', 'de', 'sk', 'fr', 'es', 'pt-br', 'zh-cn', 'he'];
   navigation = [
     { link: 'about', label: 'À propos' },
-    { link: 'logoBattle', label: 'Logo Battle' },
-
+    { link: 'logoBattle', label: 'Logo Battle' }
   ];
   navigationSideMenu = [
     ...this.navigation,
@@ -70,8 +67,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.audioPlayerRef.nativeElement.play();
+    //this.audioPlayerRef.nativeElement.play();
 
     this.storageService.testLocalStorage();
     if (AppComponent.isIEorEdgeOrSafari()) {

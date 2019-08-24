@@ -11,14 +11,14 @@ export const environment = {
   production: false,
   test: false,
   i18nPrefix: '',
-  firebaseConfig :{
-    apiKey: "AIzaSyB2T-vKNN22pcxLkId4BD1O8jNoIJwMGOM",
-    authDomain: "university-111.firebaseapp.com",
-    databaseURL: "https://university-111.firebaseio.com",
-    projectId: "university-111",
-    storageBucket: "",
-    messagingSenderId: "1042476804374",
-    appId: "1:1042476804374:web:692dbb0e0aecf05a"
+  firebaseConfig: {
+    apiKey: 'AIzaSyAUGdBOm2gv2Ghw9-zDuhvzNbBa5MSt6_0',
+    authDomain: 'logorun-123.firebaseapp.com',
+    databaseURL: 'https://logorun-123.firebaseio.com',
+    projectId: 'logorun-123',
+    storageBucket: '',
+    messagingSenderId: '96540546073',
+    appId: '1:96540546073:web:d4c50fcc0694b7cf'
   },
   versions: {
     app: packageJson.version,

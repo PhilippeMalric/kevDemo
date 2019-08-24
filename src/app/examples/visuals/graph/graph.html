@@ -1,6 +1,12 @@
 <div class="center">
-<svg #svg [attr.width]="_options.width" [attr.height]="_options.height" arrowDef>
+
+<svg #svg [attr.width]="_options.width" [attr.height]="_options.height">
+
+
     <g [zoomableOf]="svg">
+      <rect  x="150" y="0" width="1050" [attr.height]="height" style="fill:rgba(0, 0, 255, 0.404);stroke-width:3;stroke:rgb(0,0,0)" />
+      <rect  x="200" y="0" width="30" [attr.height]="height" style="fill:rgb(255, 0, 0);stroke-width:3;stroke:rgb(151, 0, 0)" />
+      <rect  x="1200" y="0" width="50" [attr.height]="height" style="fill:rgb(53, 53, 53);stroke-width:3;stroke:rgb(53, 53, 53)" />
       <g [linkVisual2]="link" *ngFor="let link of links"></g>
       <g [nodeVisual]="node" *ngFor="let node of nodes"
           [draggableNode]="node" [draggableInGraph]="graph"
@@ -10,6 +16,9 @@
   </svg>
 </div>
 
+
+
+<!--
 <div class="center">
   <button type="button" mat-raised-button color="accent"
     [ngClass]="routeAnimationsElements" (click)="clickButton()">
@@ -22,4 +31,19 @@
 </button>
 
 </div>
+
+
+-->
+<div class="center">
+
+  <button type="button" mat-raised-button color="accent"
+  [ngClass]="routeAnimationsElements" (click)="start()">
+  Départ!
+</button>
+<button type="button" mat-raised-button color="accent"
+  [ngClass]="routeAnimationsElements" (click)="reset()">
+  Reset
+</button>
+</div>
+
 

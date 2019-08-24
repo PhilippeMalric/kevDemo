@@ -21,20 +21,18 @@ const routes: Routes = [
       {
         path: 'crud',
         component: CrudComponent,
-        canActivate: [AuthGuardService],
         data: { title: 'Liste de lecture' }
       },
       {
         path: 'crud/:id',
         component: CrudComponent,
-        canActivate: [AuthGuardService],
         data: { title: 'Liste de lecture' }
       },
       {
         path: 'gears',
         component: GearsComponent,
         data: { title: 'Graph' }
-      },
+      }
     ]
   }
 ];

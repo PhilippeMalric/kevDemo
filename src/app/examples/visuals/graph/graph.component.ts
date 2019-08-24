@@ -1,79 +1,161 @@
-import { Component, Input, ChangeDetectorRef, HostListener, ChangeDetectionStrategy, OnInit, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  ChangeDetectorRef,
+  HostListener,
+  ChangeDetectionStrategy,
+  OnInit,
+  AfterViewInit
+} from '@angular/core';
 import { D3Service, ForceDirectedGraph, Node, Link } from '../../d3';
 import { DataService } from '@app/examples/gears/data.service';
 import { ROUTE_ANIMATIONS_ELEMENTS } from '@app/core';
 import { Store, select } from '@ngrx/store';
 import { State } from '@app/examples/examples.state';
-import { selectAllBooks } from '@app/examples/crud/books.selectors';
-import { ActionBooksLikeOne } from '@app/examples/crud/books.actions';
-
+import { selectAllLogos } from '@app/examples/crud/logos.selectors';
+import {
+  ActionLogosLikeOne,
+  ActionLogosUpsertAll,
+  ActionLogosUpsertAll2,
+  ActionLogosUpsertOne
+} from '@app/examples/crud/logos.actions';
+import { Observable } from 'rxjs';
+import { NodeService } from './node.service';
+import { Logo } from '@app/examples/crud/logos.model';
+import { take } from 'rxjs/operators';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { Logos_KEY } from '@app/examples/crud/logos.effects';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-graph',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'graph.html',
-  styleUrls: ['./graph.component.css']
+  styleUrls: ['./graph.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GraphComponent implements OnInit, AfterViewInit {
-  nodes;
+  nodes: Node[];
   links: Link[];
   graph: ForceDirectedGraph;
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
-  public _options: { width, height } = { width: 400, height: 400 };
+  public _options: { width; height } = { width: 400, height: 400 };
+
+  height: string;
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.graph.initSimulation(this.options);
   }
 
-
-  constructor(private d3Service: D3Service, private ref: ChangeDetectorRef, private dataS:DataService,public store: Store<State>) {}
-
-  ngOnInit() {
-
-
-
+  constructor(
+    private d3Service: D3Service,
+    private ref: ChangeDetectorRef,
+    private dataS: DataService,
+    public store: Store<State>,
+    private nodeService: NodeService,
+    private afs: AngularFirestore,
+    private router: Router
+  ) {
+    this.links = [];
+    router.events.subscribe(val => {
+      if (this.nodes) {
+        this.height = '' + (this.nodes.length * 100 + 100);
+        this.ref.markForCheck();
+      }
+    });
+    //this.getDataOnce()
   }
 
-  ngAfterViewInit() {
+  getData() {
+    this.dataS.store.pipe(select(selectAllLogos)).subscribe((logos: any) => {
+      this.height = '' + (logos.length * 100 + 100);
+      this.ref.markForCheck();
+      console.log('logos');
+      console.log(logos);
+      let tab = Object.keys(logos);
+      let dict = logos;
+      this.nodeService.node$.next(
+        tab.map(
+          (k, i) =>
+            new Node(
+              dict[k].id,
+              dict[k].url_img,
+              dict[k].texte,
+              dict[k].niveauDaccord,
+              dict[k].x,
+              dict[k].y
+            )
+        )
+      );
+    });
+  }
 
-    this.store.pipe(select(selectAllBooks)).subscribe(
+  ngOnInit() {}
+
+  ngAfterViewInit() {
+    this.updateLogo();
+    this.getData();
+
+    /*
+    this.store.pipe(
+        select(selectAllLogos),
+        take(1)
+
+      ).subscribe(
       (logos)=>{
         console.log(logos)
 
-        this.nodes = logos.map((logo,i)=>new Node(logo.id,logo.url_img,logo.texte,logo.niveauDaccord));
-        this.links = [];
-        /** Receiving an initialized simulated graph from our custom d3 service */
+        this.nodeService.node$.next(logos.map((logo,i)=>new Node(logo.id,logo.url_img,logo.texte,logo.niveauDaccord,0,0)))
 
-        this.graph = this.d3Service.getForceDirectedGraph(this.nodes, this.links, this.options);
-        this.graph.initSimulation(this.options)
-
-        this.graph.ticker.subscribe((d) => {
-          this.ref.markForCheck();
     });
-
-      }
-    )
     //this.d3Service.createNodeLabels(this.nodes)
+    */
+  }
 
+  updateLogo() {
+    this.nodeService.node$.pipe().subscribe((nodes: Node[]) => {
+      if (this.graph) {
+        this.nodes = nodes;
+
+        console.log('graph exist');
+        this.ref.markForCheck();
+        //this.graph = this.d3Service.changeForceDirectedGraph(this.nodes)
+        //this.nodes = this.graph.simulation.nodes
+      } else {
+        this.nodes = nodes;
+        console.log('new graph');
+        this.graph = this.d3Service.getForceDirectedGraph(
+          this.nodes,
+          this.links,
+          this.options
+        );
+        this.graph.initSimulation(this.options);
+        this.graph.ticker.subscribe(d => {
+          this.ref.markForCheck();
+        });
+        //this.nodes = this.graph.simulation.nodes
+      }
+    });
   }
 
   clickButton() {
+    console.log(this.nodes);
+    console.log(this.links);
 
-    console.log(this.nodes)
-    console.log(this.links)
+    this.nodes = this.nodes.slice(0, this.nodes.length - 1);
+    this.links = this.links.slice(0, this.links.length - 1);
+    this.links[this.links.length - 1].target = 0;
+    this.graph = this.d3Service.changeForceDirectedGraph(this.nodes);
 
-    this.nodes = this.nodes.slice(0,this.nodes.length -1)
-    this.links = this.links.slice(0,this.links.length -1)
-    this.links[this.links.length-1].target = 0
-    this.graph = this.d3Service.changeForceDirectedGraph(this.nodes, this.links);
-
-
-    this.d3Service.click(this.nodes,this.links, this.options)
+    this.d3Service.click(this.nodes, this.links, this.options);
   }
 
   clickButton2() {
+    this.d3Service.getIpCliente().subscribe(ip => {
+      console.log('ip:' + ip);
+    });
 
+    /*
     console.log(this.nodes)
     console.log(this.links)
 
@@ -89,16 +171,105 @@ export class GraphComponent implements OnInit, AfterViewInit {
     node.y = this.options.height / 2
 
     //this.d3Service.click(this.nodes,this.links, this.options)
+    */
+  }
+  clickButton3() {
+    //this.dataS.fireStoreObservable("ioy7jLywmRi3wBoJ2itl")
+  }
+
+  clickButton4() {
+    console.log('nodes');
+    console.log(this.nodes);
+
+    let newNodes: any[] = this.nodes.map(node => {
+      let wi = this.options.width / 2;
+      let he = this.options.height / 2;
+
+      return {
+        ...node,
+        x: Math.random() * 100 - 50 + wi,
+        y: Math.random() * 200 - 100 + he
+      };
+    });
+    this.store.dispatch(
+      new ActionLogosUpsertAll({
+        logos: newNodes.map((node, i) => {
+          console.log('node');
+          console.log(node);
+          return new Logo(
+            node.id,
+            node.texte,
+            node.img,
+            node.linkCount,
+            '',
+            false,
+            '',
+            node.x,
+            node.y
+          );
+        })
+      })
+    );
+  }
+
+  start() {
+    let fin = false;
+    let interval = setInterval(() => {
+      if (!fin) {
+        this.store.dispatch(
+          new ActionLogosUpsertAll2({
+            logos: this.nodes.map((node, i) => {
+              return new Logo(
+                node.id,
+                node.label,
+                node.img,
+                node.linkCount,
+                '',
+                false,
+                '',
+                node.x + 100 * Math.random(),
+                node.y
+              );
+            })
+          })
+        );
+
+        let filtra = this.nodes.filter(node => {
+          return node.x > 1200;
+        });
+        if (filtra.length > 0) {
+          fin = true;
+        }
+      } else {
+        clearInterval(interval);
+      }
+    }, 250);
+  }
+
+  reset() {
+    this.store.dispatch(
+      new ActionLogosUpsertAll2({
+        logos: this.nodes.map((node, i) => {
+          return new Logo(
+            node.id,
+            node.label,
+            node.img,
+            node.linkCount,
+            '',
+            false,
+            '',
+            200,
+            i * 100 + 100
+          );
+        })
+      })
+    );
   }
 
   get options() {
-    return this._options = {
-      width: window.innerWidth-50,
-      height: window.innerHeight-200
-    };
+    return (this._options = {
+      width: window.innerWidth - 50,
+      height: window.innerHeight - 200
+    });
   }
-
-
-
-
 }
