@@ -45,7 +45,7 @@ export class VoteService {
     return collection.snapshotChanges().pipe(
       map(actions => actions.map(this.documentToDomainObject)),
       tap(data => {
-        console.log(data);
+        //console.log(data);
       })
     );
   }
@@ -67,8 +67,8 @@ modifyCartesToFirebase(id,carte:Votes){
   }
 
   addVoteToFirebase(votes) {
-    console.log('votes');
-    console.log(votes);
+    //console.log('votes');
+    //console.log(votes);
 
     const collection: AngularFirestoreCollection<Vote> = this.af.collection(
       'votes'

@@ -53,7 +53,7 @@ export class GoogleAuthService {
       .then((result) => {
         /* Call the SendVerificaitonMail() function when new user sign
         up and returns promise */
-        console.log(result)
+        //console.log(result)
         //this.store.dispatch(new GetUser(new User(result.user.uid,result.user.displayName,email)))
         this.SendVerificationMail();
       }).catch((error) => {

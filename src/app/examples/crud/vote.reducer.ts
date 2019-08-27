@@ -24,13 +24,22 @@ export function voteReducer(
     case VoteActionTypes.UPSERT_ONE:
       console.log('action.payload.vote');
       console.log(action.payload.vote);
+      console.log("state")
+      console.log(state)
       return voteAdapter.upsertOne(action.payload.vote, state);
 
     case VoteActionTypes.UPSERT_ALL_FromFirebase:
-      voteAdapter.upsertMany(action.payload.votes, state);
+
+      return action.payload.votes;
 
     case VoteActionTypes.UPSERT_ALL:
-      return voteAdapter.upsertOne(action.payload.votes, state);
+        console.log("state")
+        console.log(state)
+        console.log('action.payload.votes');
+        console.log(action.payload.votes);
+        let votes: any = action.payload.votes.ids.map((id)=>action.payload.votes.entities[id])
+
+      return voteAdapter.upsertMany(votes, state);
 
     case VoteActionTypes.UPSERT_ONE:
       return voteAdapter.upsertOne(action.payload.vote, state);

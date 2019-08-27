@@ -4,7 +4,7 @@ import { Vote } from './vote.model';
 export enum VoteActionTypes {
   UPSERT_ONE = '[vote] Upsert_one',
   UPSERT_ALL_FromFirebase = '[vote] Upsert_all_FromFirebase',
-  UPSERT_ALL = '[vote] Upsert_all_carte_FromFirebase',
+  UPSERT_ALL = '[vote] Upsert_all_votes_FromFirebase',
   UPDATE = '[vote] Update',
   RESET = '[vote] Reset',
   DELETE_ONE = '[vote] Delete_one_carte'
@@ -12,7 +12,7 @@ export enum VoteActionTypes {
 
 export class ActionVoteUpsertAll implements Action {
   readonly type = VoteActionTypes.UPSERT_ALL;
-  constructor(readonly payload: { votes: Vote }) {}
+  constructor(readonly payload: { votes: any }) {}
 }
 
 export class ActionVoteUpsertAllFromFirebase implements Action {

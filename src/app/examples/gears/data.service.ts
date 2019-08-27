@@ -37,15 +37,8 @@ export class DataService {
         tap((data: any) => {
           console.log('Votes dispatch : ');
           console.log(data);
-        }),
-        map((data: any) => {
-          return data.entities;
-        }),
-        tap((data: any) => {
-          console.log('Votes dispatch 2 : ');
-          console.log(data);
         })
-      );
+        )
   }
 
   fireStoreObservable(key: string) {

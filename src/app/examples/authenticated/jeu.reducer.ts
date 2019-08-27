@@ -30,12 +30,12 @@ export function jeuReducer(
 ): JeuState {
   switch (action.type) {
     case JeuActionTypes.UPSERT_ONE_CARTE:
-      console.log('state');
-      console.log(state);
+      //console.log('state');
+      //console.log(state);
 
-      console.log('entities');
+      //console.log('entities');
 
-      console.log(state.entities);
+      //console.log(state.entities);
       /*
       let cartes = JSON.parse(JSON.stringify(state.entities["test"].cartes))
       cartes.push(action.payload.carte)

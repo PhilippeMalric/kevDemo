@@ -26,7 +26,7 @@ export function logoReducer(
 ): LogoState {
   switch (action.type) {
     case LogoActionTypes.UPSERT_ONE:
-      console.log('LogoUpserted');
+      //console.log('LogoUpserted');
       return logoAdapter.upsertOne(action.payload.logo, state);
 
     case LogoActionTypes.UPSERT_ALL:
@@ -40,8 +40,8 @@ export function logoReducer(
 
     case LogoActionTypes.CHANGE_NIVEAU:
       let logoState: LogoState = JSON.parse(JSON.stringify(state));
-      console.log(logoState.entities);
-      console.log(action.payload.id);
+      //console.log(logoState.entities);
+      //console.log(action.payload.id);
       logoState.entities[action.payload.id].niveauDaccord += 1;
       return logoState;
     /*

@@ -40,12 +40,12 @@ export class D3Service {
       .pipe(
         // ...using post request '
         map((text: any) => {
-          console.log('text ', text);
+          //console.log('text ', text);
           if (!text.startsWith('<error>')) {
-            console.log('IP!');
+            //console.log('IP!');
             var pattIp = new RegExp(':.(.*..*..*).}');
             let ip = pattIp.exec(text)[1];
-            console.log(ip);
+            //console.log(ip);
             return ip;
           } else {
             return '';

@@ -39,7 +39,7 @@ export class JeuServiceService {
     return collection.snapshotChanges().pipe(
       map(actions => actions.map(this.documentToDomainObject)),
       tap(data => {
-        console.log(data);
+        //console.log(data);
       })
     );
   }
@@ -59,8 +59,8 @@ export class JeuServiceService {
   }
 
   addCartesToFirebase(jeuState: any) {
-    console.log('jeuState');
-    console.log(jeuState);
+    //console.log('jeuState');
+    //console.log(jeuState);
 
     const collection: AngularFirestoreCollection<Carte> = this.af.collection(
       'cartes'

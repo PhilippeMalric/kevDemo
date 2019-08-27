@@ -37,9 +37,9 @@ export class JeuxEffects {
     withLatestFrom(this.store),
     tap(
       ([data, store]) => {
-        console.log('data to firebase!!');
-        console.log(data);
-        console.log(store);
+        //console.log('data to firebase!!');
+        //console.log(data);
+        //console.log(store);
 
         this.jeuServiceService.addCartesToFirebase(store);
       }

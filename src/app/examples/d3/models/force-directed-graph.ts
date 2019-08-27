@@ -43,8 +43,8 @@ export class ForceDirectedGraph {
   }
 
   clickLogo(logo: Node, i: number): any {
-    console.log('logo');
-    console.log(logo);
+    //console.log('logo');
+    //console.log(logo);
     //let lo : Logo = new Logo(""+i,logo.label,logo.img)
     //this.store.dispatch(new ActionBooksLikeOne(lo));
   }

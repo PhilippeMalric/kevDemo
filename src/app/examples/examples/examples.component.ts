@@ -23,6 +23,7 @@ import {
   ActionJeuUpsertOneCarte,
   ActionJeuUpsertAllCartesFromFirebase
 } from '../authenticated/jeu.actions';
+import { ActionVoteUpsertAll } from '../crud/vote.actions';
 
 interface State extends BaseSettingsState, BaseExamplesState {}
 
@@ -35,7 +36,6 @@ interface State extends BaseSettingsState, BaseExamplesState {}
 export class ExamplesComponent implements OnInit {
   isAuthenticated$: Observable<boolean>;
 
-  cartes$;
 
   entitiesLogo$: Observable<any[]>;
   subscription: Subscription;
@@ -47,6 +47,7 @@ export class ExamplesComponent implements OnInit {
   ];
 
   key: string = Logos_KEY;
+  votes$: Observable<any>;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -56,10 +57,12 @@ export class ExamplesComponent implements OnInit {
     if (this.subscription2) {
       this.subscription2.unsubscribe();
     }
-    this.cartes$ = this.dataS.fireStoreVotes();
-    this.subscription2 = this.cartes$.subscribe((carte: any) => {
+    this.votes$ = this.dataS.fireStoreVotes();
+    this.subscription2 = this.votes$.subscribe((votes: any) => {
+      //console.log("votes")
+      //console.log(votes)
       this.store.dispatch(
-        new ActionJeuUpsertAllCartesFromFirebase({ carte: carte })
+        new ActionVoteUpsertAll({ votes: votes })
       );
     });
     this.subscription = null;
@@ -67,8 +70,8 @@ export class ExamplesComponent implements OnInit {
     const inter1 = setInterval(() => {
       if (dataS.logoKey) {
         dataS.logoKey.subscribe(key => {
-          console.log('key');
-          console.log(key);
+          //console.log('key');
+          //console.log(key);
           this.key = key;
           this.changeEntityLogo();
         });
@@ -84,8 +87,8 @@ export class ExamplesComponent implements OnInit {
 
     this.entitiesLogo$ = this.dataS.fireStoreObservable(this.key);
     this.subscription = this.entitiesLogo$.subscribe((logos: Logo[]) => {
-      console.log('new fireStoreObservable logos');
-      console.log(logos);
+      //console.log('new fireStoreObservable logos');
+      //console.log(logos);
       this.store.dispatch(new ActionLogosUpsertAll({ logos: logos }));
     });
     this.changeDetectorRef.markForCheck();
