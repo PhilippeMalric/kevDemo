@@ -15,8 +15,14 @@ import { State as BaseExamplesState } from '../examples.state';
 import { DataService } from '../gears/data.service';
 import { Logo } from '../crud/logos.model';
 
+import { Jeu, JeuState } from '../authenticated/jeu.model';
+
 import { Logos_KEY } from '../../examples/crud/logos.effects';
 import { ActionLogosUpsertAll } from '../crud/logos.actions';
+import {
+  ActionJeuUpsertOneCarte,
+  ActionJeuUpsertAllCartesFromFirebase
+} from '../authenticated/jeu.actions';
 
 interface State extends BaseSettingsState, BaseExamplesState {}
 
@@ -29,8 +35,11 @@ interface State extends BaseSettingsState, BaseExamplesState {}
 export class ExamplesComponent implements OnInit {
   isAuthenticated$: Observable<boolean>;
 
+  cartes$;
+
   entitiesLogo$: Observable<any[]>;
   subscription: Subscription;
+  subscription2: Subscription;
 
   examples = [
     { link: 'crud', label: 'Liste des Logos', auth: true },
@@ -44,6 +53,15 @@ export class ExamplesComponent implements OnInit {
     private store: Store<State>,
     private dataS: DataService
   ) {
+    if (this.subscription2) {
+      this.subscription2.unsubscribe();
+    }
+    this.cartes$ = this.dataS.fireStoreVotes();
+    this.subscription2 = this.cartes$.subscribe((carte: any) => {
+      this.store.dispatch(
+        new ActionJeuUpsertAllCartesFromFirebase({ carte: carte })
+      );
+    });
     this.subscription = null;
     this.changeEntityLogo();
     const inter1 = setInterval(() => {
@@ -66,6 +84,7 @@ export class ExamplesComponent implements OnInit {
 
     this.entitiesLogo$ = this.dataS.fireStoreObservable(this.key);
     this.subscription = this.entitiesLogo$.subscribe((logos: Logo[]) => {
+      console.log('new fireStoreObservable logos');
       console.log(logos);
       this.store.dispatch(new ActionLogosUpsertAll({ logos: logos }));
     });

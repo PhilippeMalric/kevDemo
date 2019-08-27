@@ -26,6 +26,7 @@ import { take } from 'rxjs/operators';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Logos_KEY } from '@app/examples/crud/logos.effects';
 import { Router } from '@angular/router';
+import { BoundElementProperty } from '@angular/compiler';
 
 @Component({
   selector: 'app-graph',
@@ -83,7 +84,8 @@ export class GraphComponent implements OnInit, AfterViewInit {
               dict[k].texte,
               dict[k].niveauDaccord,
               dict[k].x,
-              dict[k].y
+              dict[k].y,
+              dict[k].avg
             )
         )
       );
@@ -205,12 +207,20 @@ export class GraphComponent implements OnInit, AfterViewInit {
             false,
             '',
             node.x,
-            node.y
+            node.y,
+            node.avg
           );
         })
       })
     );
   }
+
+  nextStep = node => {
+    if (!node.avg) {
+      node.avg = 0;
+    }
+    return node.x + Math.random() * (20 + 10 * node.avg) + 20;
+  };
 
   start() {
     let fin = false;
@@ -218,7 +228,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
       if (!fin) {
         this.store.dispatch(
           new ActionLogosUpsertAll2({
-            logos: this.nodes.map((node, i) => {
+            logos: this.nodes.map((node: Node, i) => {
               return new Logo(
                 node.id,
                 node.label,
@@ -227,8 +237,9 @@ export class GraphComponent implements OnInit, AfterViewInit {
                 '',
                 false,
                 '',
-                node.x + 100 * Math.random(),
-                node.y
+                this.nextStep(node),
+                node.y,
+                node.avg
               );
             })
           })
@@ -259,7 +270,8 @@ export class GraphComponent implements OnInit, AfterViewInit {
             false,
             '',
             200,
-            i * 100 + 100
+            i * 100 + 100,
+            node.avg
           );
         })
       })

@@ -1,18 +1,6 @@
 import { EntityState } from '@ngrx/entity';
 import { User } from '@app/core/auth/user.model';
 
-export class Vote {
-  nom: string;
-  niveauDaccord: number;
-  commentaire: string;
-
-  constructor(nom: string, niveauDaccord: number, commentaire: string) {
-    this.nom = nom;
-    this.niveauDaccord = niveauDaccord;
-    this.commentaire = commentaire;
-  }
-}
-
 export class Logo {
   id: string;
   texte: string;
@@ -23,6 +11,7 @@ export class Logo {
   commentaire: string;
   x?: number;
   y?: number;
+  avg?: number;
 
   constructor(
     id: string,
@@ -33,7 +22,8 @@ export class Logo {
     aimez,
     commentaire,
     x,
-    y
+    y,
+    avg = 0
   ) {
     this.id = id;
     this.texte = texte;
@@ -44,6 +34,7 @@ export class Logo {
     this.commentaire = commentaire;
     this.x = x;
     this.y = y;
+    this.avg = avg;
   }
 }
 

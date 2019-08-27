@@ -12,7 +12,7 @@ import { Store, select } from '@ngrx/store';
 import { ROUTE_ANIMATIONS_ELEMENTS, selectName, AppState } from '@app/core';
 
 import { State } from '../../examples.state';
-import { Logo, Vote } from '../logos.model';
+import { Logo } from '../logos.model';
 import {
   ActionLogosUpsertOne,
   ActionLogosDeleteOne,
@@ -24,6 +24,15 @@ import { map, tap, take } from 'rxjs/operators';
 import { Logos_KEY, DICT_uID_FB } from '../logos.effects';
 import { DataService } from '@app/examples/gears/data.service';
 import { Node } from '@app/examples/d3';
+import { JeuState } from '@app/examples/authenticated/jeu.model';
+import {
+  ActionJeuUpsertOneCarte,
+  ActionJeuUpsertAllCartes
+} from '@app/examples/authenticated/jeu.actions';
+import { JsonPipe } from '@angular/common';
+import { Vote, VoteState } from '../vote.model';
+import { ActionVoteUpsertAll, ActionVoteUpsertOne } from '../vote.actions';
+import { selectAllVote } from '../vote.selectors';
 
 @Component({
   selector: 'anms-crud',
@@ -63,6 +72,8 @@ export class CrudComponent {
     public store: Store<State>,
     public fb: FormBuilder,
     private router: Router,
+    private jeuStore: Store<JeuState>,
+    private voteStore: Store<VoteState>,
     private dataS: DataService
   ) {
     this.authName$ = this.store2.pipe(select(selectName));
@@ -73,6 +84,7 @@ export class CrudComponent {
     });
 
     this.store.pipe(select(selectAllLogos)).subscribe(logos => {
+      console.log('myLogos');
       console.log(logos);
       this.myLogos = logos;
     });
@@ -112,15 +124,18 @@ export class CrudComponent {
   }
   ngOnInit(): void {}
 
-  onInputChange(event, logo, i) {
+  onInputChange(event, i) {
     console.log('event');
     console.log(event);
+    let newMyLogos = JSON.parse(JSON.stringify(this.myLogos));
 
-    this.myLogos[i] = Object.assign({}, this.myLogos[i], {
-      niveauDaccord: event.value
-    });
-    console.log(this.myLogos[i]);
+    newMyLogos[i].niveauDaccord = event.value;
+
+    this.myLogos = newMyLogos;
+
+    console.log(this.myLogos);
   }
+
   textChange(event, i) {
     console.log('event');
     console.log(event);
@@ -143,7 +158,36 @@ export class CrudComponent {
     console.log('book223');
     console.log(logo);
     console.log(this.authName);
-    this.store.dispatch(new ActionLogosUpsertOne({ logo: logo }));
+    if (this.authName) {
+      console.log(this.authName);
+      this.voteStore.dispatch(
+        new ActionVoteUpsertOne({
+          vote: {
+            id: this.authName + '-' + logo.id,
+            nom: this.authName,
+            logo: logo.id,
+            niveauDaccord: logo.niveauDaccord,
+            commentaire: 'test'
+          }
+        })
+      );
+    } else {
+      let vote = {
+        vote: {
+          id: 'DEMO-' + logo.id,
+          nom: 'test',
+          logo: logo.id,
+          niveauDaccord: logo.niveauDaccord,
+          commentaire: 'test'
+        }
+      };
+      console.log('vote');
+      console.log(vote);
+      this.voteStore.dispatch(new ActionVoteUpsertOne(vote));
+    }
+
+    //this.store.dispatch(new ActionLogosUpsertOne({ logo: logo }));
+    //this.jeuStore.dispatch(new ActionJeuUpsertAllCartes({ carte: {valeur:logo.niveauDaccord,couleur:"",noms:[]} }));
   }
 
   deselect() {

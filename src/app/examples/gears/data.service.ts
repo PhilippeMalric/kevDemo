@@ -28,6 +28,26 @@ export class DataService {
     console.log('Hello');
   }
 
+  fireStoreVotes() {
+    return this.afs
+      .collection('votes')
+      .doc('rUsx9vFEVq4il8FWX1w0')
+      .valueChanges()
+      .pipe(
+        tap((data: any) => {
+          console.log('Votes dispatch : ');
+          console.log(data);
+        }),
+        map((data: any) => {
+          return data.entities;
+        }),
+        tap((data: any) => {
+          console.log('Votes dispatch 2 : ');
+          console.log(data);
+        })
+      );
+  }
+
   fireStoreObservable(key: string) {
     console.log('Key2 : ' + key);
 
@@ -90,7 +110,8 @@ export class DataService {
                 logo.texte,
                 logo.niveauDaccord,
                 logo.x,
-                logo.y
+                logo.y,
+                logo.avg
               )
           );
           this.store.dispatch(new ActionLogosUpsertAll({ logos: logos }));

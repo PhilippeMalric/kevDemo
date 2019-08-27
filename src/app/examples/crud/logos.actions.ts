@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Logo, Vote } from './logos.model';
+import { Logo } from './logos.model';
 
 export enum LogoActionTypes {
   UPSERT_ONE = '[logos] Upsert One',

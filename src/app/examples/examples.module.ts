@@ -25,6 +25,7 @@ import { SHARED_VISUALS } from './visuals/shared';
 import { D3_DIRECTIVES, D3Service } from './d3';
 import { GraphComponent } from './visuals/graph/graph.component';
 import { DataService } from './gears/data.service';
+import { VotesEffects } from './crud/vote.effects';
 @NgModule({
   imports: [
     SharedModule,
@@ -38,7 +39,12 @@ import { DataService } from './gears/data.service';
       },
       isolate: true
     }),
-    EffectsModule.forFeature([ExamplesEffects, JeuxEffects, LogosEffects])
+    EffectsModule.forFeature([
+      ExamplesEffects,
+      JeuxEffects,
+      LogosEffects,
+      VotesEffects
+    ])
   ],
   declarations: [
     GraphComponent,

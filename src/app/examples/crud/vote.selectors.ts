@@ -7,10 +7,10 @@ const { selectEntities, selectAll } = jeuAdapter.getSelectors();
 
 export const selectJeux = createSelector(
   selectExamples,
-  (state: ExamplesState) => state.jeux
+  (state: ExamplesState) => state.votes
 );
 
-export const selectAllJeu = createSelector(selectJeux, selectAll);
+export const selectAllVote = createSelector(selectJeux, selectAll);
 
 export const selectJeuxState = createSelector(
   selectExamples,

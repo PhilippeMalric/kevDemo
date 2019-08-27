@@ -26,6 +26,7 @@ export function logoReducer(
 ): LogoState {
   switch (action.type) {
     case LogoActionTypes.UPSERT_ONE:
+      console.log('LogoUpserted');
       return logoAdapter.upsertOne(action.payload.logo, state);
 
     case LogoActionTypes.UPSERT_ALL:

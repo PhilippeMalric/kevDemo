@@ -9,7 +9,7 @@ import { State } from '../examples.state';
 import { TodosActionTypes } from './todos.actions';
 import { JeuActionTypes } from './jeu.actions';
 import { selectJeuTour } from './jeu.selectors';
-import { Carte } from './jeu.model';
+import { Carte, JeuState } from './jeu.model';
 import { JeuServiceService } from './jeu-service.service';
 
 export const TODOS_KEY = 'EXAMPLES.TODOS';
@@ -20,31 +20,30 @@ export class JeuxEffects {
     private actions$: Actions<Action>,
     private store: Store<State>,
     private localStorageService: LocalStorageService,
-    public jeuServiceService: JeuServiceService
-
+    public jeuServiceService: JeuServiceService,
+    private jeuStore: Store<JeuState>
   ) {}
 
   @Effect({ dispatch: false })
   persistTodos = this.actions$.pipe(
-    ofType(
-      JeuActionTypes.RESET
-    ),
+    ofType(JeuActionTypes.RESET),
     withLatestFrom(this.store.pipe(select(selectJeuTour))),
     tap(([action, tour]) => this.localStorageService.setItem(TODOS_KEY, tour))
   );
 
   @Effect({ dispatch: false })
   addCarteToFirebase = this.actions$.pipe(
-    ofType(
-      JeuActionTypes.UPSERT_ONE_CARTE
-    ),
-    tap((data:any) =>{
-      console.log(data)
-      this.jeuServiceService.addCartesToFirebase(data.payload)
-    }
-  ));
+    ofType(JeuActionTypes.UPSERT_ALL_CARTE),
+    withLatestFrom(this.store),
+    tap(
+      ([data, store]) => {
+        console.log('data to firebase!!');
+        console.log(data);
+        console.log(store);
 
-
-
-
+        this.jeuServiceService.addCartesToFirebase(store);
+      }
+      //selectAllJeu
+    )
+  );
 }

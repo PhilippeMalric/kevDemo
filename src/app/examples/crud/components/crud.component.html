@@ -8,6 +8,17 @@
       <mat-card *ngFor="let logo of myLogos;let i = index; trackBy:trackByIndex;"
          data-testid="crud-item"
         [ngClass]="myLogos[i].style + ' routeAnimationsElements'" >
+        <mat-slider class="col-sm-2"
+          class="example-margin"
+          [max]="5"
+          [min]="0"
+          [step]="1"
+          [thumbLabel]="false"
+          [tickInterval]="1"
+          [vertical]="false"
+          [value]="logo.avg"
+        >
+        </mat-slider>
         <div class="divImg">
             <img mat-card-image class="image" [src]="logo.url_img" [alt]="logo.texte" (click)="select(logo)">
         </div>
@@ -21,7 +32,8 @@
           [thumbLabel]="true"
           [tickInterval]="1"
           [vertical]="true"
-          [(ngModel)]="logo.niveauDaccord"
+          [value]="logo.niveauDaccord"
+          (change)="onInputChange($event,i)"
           >
           </mat-slider>
         </div>

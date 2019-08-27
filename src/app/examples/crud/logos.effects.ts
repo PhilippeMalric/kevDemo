@@ -88,6 +88,7 @@ export class LogosEffects {
         .subscribe((values: any) => {
           console.log('values');
           console.log(values);
+          /*
           if (store.auth.uid in values) {
             let id = values[store.auth.uid];
             const collection: AngularFirestoreCollection<
@@ -95,12 +96,17 @@ export class LogosEffects {
             > = this.afs.collection('logos');
             collection.doc(id).update(store);
           } else {
-            const collection: AngularFirestoreCollection<
-              LogoState
-            > = this.afs.collection('logos');
-            collection.doc(Logos_KEY).update(store);
-            console.log('User not in index : ' + DICT_uID_FB);
-          }
+
+            */
+          console.log('store to firestore');
+          console.log(store);
+
+          const collection: AngularFirestoreCollection<
+            LogoState
+          > = this.afs.collection('logos');
+          collection.doc(Logos_KEY).update(store);
+          console.log('User not in index : ' + DICT_uID_FB);
+          //}
         });
     })
   );
