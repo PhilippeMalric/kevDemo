@@ -46,9 +46,9 @@
           </mat-slider>
         </div>
 
-        <mat-form-field class="example-full-width">
-          <textarea matInput maxlength="300" name="text-{{i}}"  placeholder="Commentaires"  [(ngModel)]="logo.commentaire"></textarea>
-        </mat-form-field>
+
+          <textarea matInput maxlength="300" name="text-{{i}}"  placeholder="Commentaires"  (keyup)="textChange($event,i)">{{logo.commentaire}}</textarea>
+
         <!--
 
         <mat-form-field class="example-full-width">

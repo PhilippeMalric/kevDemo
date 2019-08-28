@@ -9,7 +9,9 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 
-import { ROUTE_ANIMATIONS_ELEMENTS, selectName, AppState } from '@app/core';
+import { selectEmail } from "../../../core/auth/auth.selectors"
+
+import { ROUTE_ANIMATIONS_ELEMENTS, AppState } from '@app/core';
 
 import { State } from '../../examples.state';
 import { Logo } from '../logos.model';
@@ -76,7 +78,7 @@ export class CrudComponent {
     private voteStore: Store<VoteState>,
     private dataS: DataService
   ) {
-    this.authName$ = this.store2.pipe(select(selectName));
+    this.authName$ = this.store2.pipe(select(selectEmail));
     this.authName$.pipe(take(1)).subscribe(user => {
       this.authName = user;
       console.log('authName');
@@ -136,6 +138,17 @@ export class CrudComponent {
     console.log(this.myLogos);
   }
 
+  onTextInputChange(event, i) {
+    console.log('event');
+    console.log(event);
+    let newMyLogos = JSON.parse(JSON.stringify(this.myLogos));
+
+    newMyLogos[i].commentaire = event.srcElement.value;
+
+    this.myLogos = newMyLogos;
+
+    console.log(this.myLogos);
+  }
 
 
   textChange(event, i) {
@@ -169,7 +182,7 @@ export class CrudComponent {
             nom: this.authName,
             logo: logo.id,
             niveauDaccord: logo.niveauDaccord,
-            commentaire: 'test'
+            commentaire: logo.commentaire
           }
         })
       );
@@ -180,7 +193,7 @@ export class CrudComponent {
           nom: 'test',
           logo: logo.id,
           niveauDaccord: logo.niveauDaccord,
-          commentaire: 'test'
+          commentaire: logo.commentaire
         }
       };
       console.log('vote');

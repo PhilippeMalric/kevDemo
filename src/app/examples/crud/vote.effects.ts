@@ -66,22 +66,26 @@ export class VotesEffects {
 
       let tabNiveau = [];
 
-      let store2 = JSON.parse(JSON.stringify(store));
-
-      store2.examples.logos.entities[
+      let logos2 = JSON.parse(JSON.stringify(store.examples.logos));
+      let votes2 = JSON.parse(JSON.stringify(store.examples.votes));
+      logos2.entities[
         data['payload']['vote']['logo']
       ].niveauDaccord = data['payload']['vote']['niveauDaccord'];
 
+      logos2.entities[
+        data['payload']['vote']['logo']
+      ].commentaire =  data['payload']['vote']['commentaire'];
+
       let logId =
-        store2.examples.logos.entities[data['payload']['vote']['logo']].id;
+      logos2.entities[data['payload']['vote']['logo']].id;
       console.log('logId');
       console.log(logId);
-      for (let id of store2.examples.votes.ids) {
-        let logIdTemp = store2.examples.votes.entities[id].logo;
+      for (let id of votes2.ids) {
+        let logIdTemp = votes2.entities[id].logo;
         console.log('loglogIdTempId');
         console.log(logIdTemp);
         if (logIdTemp == logId) {
-          let vote = store2.examples.votes.entities[id];
+          let vote = votes2.entities[id];
           console.log(vote);
           tabNiveau.push(vote.niveauDaccord);
         }
@@ -89,10 +93,10 @@ export class VotesEffects {
       let avg = this.getAvg(tabNiveau);
       console.log('avg');
       console.log(avg);
-      store2.examples.logos.entities[data['payload']['vote']['logo']].avg = avg;
+      logos2.entities[data['payload']['vote']['logo']].avg = avg;
 
       let newLogo: { logo: Logo } = {
-        logo: store2.examples.logos.entities[data['payload']['vote']['logo']]
+        logo: logos2.entities[data['payload']['vote']['logo']]
       };
 
       console.log('newLogo');

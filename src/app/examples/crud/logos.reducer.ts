@@ -30,6 +30,7 @@ export function logoReducer(
       return logoAdapter.upsertOne(action.payload.logo, state);
 
     case LogoActionTypes.UPSERT_ALL:
+      console.log(action.payload.logos)
       return logoAdapter.upsertMany(action.payload.logos, state);
 
     case LogoActionTypes.UPSERT_ALL2:

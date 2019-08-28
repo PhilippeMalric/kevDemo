@@ -39,7 +39,7 @@ export class LogosEffects {
     withLatestFrom(this.store),
 
     tap(([actions, store]) => {
-      console.log('store');
+      console.log('store111');
       console.log(store);
 
       this.afs
@@ -61,9 +61,7 @@ export class LogosEffects {
           } else {
             console.log('User not in index : ' + DICT_uID_FB);
             console.log('Or not login');
-            const collection: AngularFirestoreCollection<
-              LogoState
-            > = this.afs.collection('logos');
+            const collection: AngularFirestoreCollection<LogoState> = this.afs.collection('logos');
             console.log('collection');
             console.log(collection);
             collection.doc(Logos_KEY).update(store);
@@ -101,9 +99,7 @@ export class LogosEffects {
           console.log('store to firestore');
           console.log(store);
 
-          const collection: AngularFirestoreCollection<
-            LogoState
-          > = this.afs.collection('logos');
+          const collection: AngularFirestoreCollection<LogoState> = this.afs.collection('logos');
           collection.doc(Logos_KEY).update(store);
           console.log('User not in index : ' + DICT_uID_FB);
           //}

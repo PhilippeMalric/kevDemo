@@ -6,7 +6,7 @@ import { Logos_KEY } from '../crud/logos.effects';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Store } from '@ngrx/store';
 import { State } from '../examples.state';
-import { tap, map, take } from 'rxjs/operators';
+import { tap, map, take, withLatestFrom } from 'rxjs/operators';
 import { Logo } from '../crud/logos.model';
 import { ActionLogosUpsertAll } from '../crud/logos.actions';
 
@@ -41,6 +41,50 @@ export class DataService {
         )
   }
 
+convertVote(obj,logo:Logo,auth,authEmail){
+  if(auth){
+    console.log("authEmail")
+    console.log(authEmail)
+    if(authEmail+"-"+logo.id in obj[1].examples.votes.entities){
+      return   obj[1].examples.votes.entities[authEmail+"-"+logo.id].niveauDaccord
+    }
+    else{
+      return 0
+    }
+
+  }
+  else{
+    if("DEMO-"+logo.id in obj[1].examples.votes.entities){
+      return   obj[1].examples.votes.entities["DEMO-"+logo.id].niveauDaccord
+     }
+     else{
+       return 0
+     }
+  }
+}
+
+convertVoteCommentaire(obj,logo:Logo,auth,authEmail){
+  if(auth){
+    console.log("authEmail")
+    console.log(authEmail)
+    if(authEmail+"-"+logo.id in obj[1].examples.votes.entities){
+      return   obj[1].examples.votes.entities[authEmail+"-"+logo.id].commentaire
+    }
+    else{
+      return 0
+    }
+
+  }
+  else{
+    if("DEMO-"+logo.id in obj[1].examples.votes.entities){
+      return   obj[1].examples.votes.entities["DEMO-"+logo.id].commentaire
+     }
+     else{
+       return 0
+     }
+  }
+}
+
   fireStoreObservable(key: string) {
     console.log('Key2 : ' + key);
 
@@ -49,11 +93,37 @@ export class DataService {
       .doc(key)
       .valueChanges()
       .pipe(
-        tap((logos: Logo[]) => {
+        tap((store:any) => {
           console.log('!!dispatch : ');
-          console.log(logos);
+          console.log(store);
         }),
-        map((obj: any) => obj.examples.logos),
+        withLatestFrom(this.store),
+        map((obj: any) => {
+
+        let newEntities = {}
+        let newLogo = JSON.parse(JSON.stringify(obj[0].examples.logos))
+        let tab = newLogo.ids.map((id => newLogo.entities[id] ))
+        if(obj[1].auth.isAuthenticated){
+          tab.map((logo => {
+            logo.niveauDaccord = this.convertVote(obj,logo,true,obj[1].auth.email)
+            logo.commentaire = this.convertVoteCommentaire(obj,logo,true,obj[1].auth.email)
+            newEntities[logo.id]= logo
+          }))
+        }
+        else{
+          tab.map((logo => {
+            logo.niveauDaccord = this.convertVote(obj,logo,false,"")
+            logo.commentaire = this.convertVoteCommentaire(obj,logo,false,"")
+
+            newEntities[logo.id]= logo
+          }))
+        }
+
+        newLogo.entities = newEntities
+
+        return newLogo
+      }),
+
         map((obj: any) => obj.entities),
 
         map(entities => {
@@ -93,22 +163,16 @@ export class DataService {
       })
       ,
       */
-        tap((logos: Logo[]) => {
+      tap(logos => {
+
+          let logos3 = JSON.parse(JSON.stringify(logos))
           console.log('dispatch : ');
-          let logos2 = logos.map(
-            logo =>
-              new Node(
-                logo.id,
-                logo.url_img,
-                logo.texte,
-                logo.niveauDaccord,
-                logo.x,
-                logo.y,
-                logo.avg
-              )
-          );
-          this.store.dispatch(new ActionLogosUpsertAll({ logos: logos }));
-        })
-      );
+          console.log(logos)
+          for (let i in logos){
+            logos3[i].niveauDaccord = 1
+          }
+
+         //this.store.dispatch(new ActionLogosUpsertAll({ logos: logos3 }));
+        }));
   }
 }
