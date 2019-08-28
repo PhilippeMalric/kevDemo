@@ -136,6 +136,8 @@ export class CrudComponent {
     console.log(this.myLogos);
   }
 
+
+
   textChange(event, i) {
     console.log('event');
     console.log(event);

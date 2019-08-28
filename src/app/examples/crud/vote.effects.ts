@@ -133,6 +133,6 @@ export class VotesEffects {
       console.log(n);
       total += n;
     }
-    return Math.floor(total / tab.length);
+    return (total / tab.length);//Math.floor
   }
 }

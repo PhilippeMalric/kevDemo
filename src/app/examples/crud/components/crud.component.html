@@ -8,17 +8,25 @@
       <mat-card *ngFor="let logo of myLogos;let i = index; trackBy:trackByIndex;"
          data-testid="crud-item"
         [ngClass]="myLogos[i].style + ' routeAnimationsElements'" >
+
+      <mat-card-header>
+        Moyenne des votes de : {{logo.texte}}
+      </mat-card-header>
+      <mat-card-content>
         <mat-slider class="col-sm-2"
-          class="example-margin"
-          [max]="5"
-          [min]="0"
-          [step]="1"
-          [thumbLabel]="false"
-          [tickInterval]="1"
-          [vertical]="false"
-          [value]="logo.avg"
-        >
-        </mat-slider>
+        class="example-margin"
+        [max]="5"
+        [min]="0"
+        [step]="1"
+        [thumbLabel]="false"
+        [tickInterval]="1"
+        [vertical]="false"
+        [value]="logo.avg"
+        [disabled]="true"
+        ></mat-slider>
+      </mat-card-content>
+
+
         <div class="divImg">
             <img mat-card-image class="image" [src]="logo.url_img" [alt]="logo.texte" (click)="select(logo)">
         </div>
@@ -37,16 +45,23 @@
           >
           </mat-slider>
         </div>
+
         <mat-form-field class="example-full-width">
           <textarea matInput maxlength="300" name="text-{{i}}"  placeholder="Commentaires"  [(ngModel)]="logo.commentaire"></textarea>
         </mat-form-field>
+        <!--
+
         <mat-form-field class="example-full-width">
           <textarea matInput maxlength="10" name="x-{{i}}"  placeholder="x"  [(ngModel)]="logo.x"></textarea>
         </mat-form-field>
         <mat-form-field class="example-full-width">
           <textarea matInput maxlength="10" name="y-{{i}}"  placeholder="y"  [(ngModel)]="logo.y"></textarea>
         </mat-form-field>
-        <button mat-raised-button (click)="launch(logo)">Envoyer</button>
+        -->
+        <mat-card-actions>
+          <button mat-raised-button (click)="launch(logo)">Envoyer</button>
+        </mat-card-actions>
+
       </mat-card>
 
 
