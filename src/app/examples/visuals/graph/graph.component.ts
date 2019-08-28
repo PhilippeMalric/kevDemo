@@ -236,7 +236,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
                 node.niveau,
                 '',
                 false,
-                node.texte,
+                "123",
                 this.nextStep(node),
                 node.y,
                 node.avg
