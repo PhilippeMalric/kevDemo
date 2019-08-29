@@ -10,7 +10,7 @@ import { VoteService } from './vote.service';
 import { VoteState, Vote } from './vote.model';
 import { VoteActionTypes } from './vote.actions';
 import { of } from 'rxjs';
-import { ActionLogosUpsertOne } from './logos.actions';
+import { ActionLogosUpsertOne, ActionLogosUpsertAll } from './logos.actions';
 import { Logo } from './logos.model';
 
 export const TODOS_KEY = 'EXAMPLES.TODOS';
@@ -122,6 +122,37 @@ export class VotesEffects {
         console.log(store.examples.votes);
 
         this.voteService.addVoteToFirebase(store.examples.votes);
+      }
+      //selectAllJeu
+    )
+  );
+
+
+  @Effect({ dispatch: false })
+  addVotesAll = this.actions$.pipe(
+    ofType(VoteActionTypes.UPSERT_ALL2),
+    withLatestFrom(this.store),
+    map(
+      ([data, store]) => {
+        console.log('data to firebase!!');
+        console.log('data');
+        console.log(data);
+
+        console.log('store');
+        console.log(store);
+        console.log('votes');
+        console.log(store.examples.votes);
+
+        this.voteService.addVoteToFirebase(store.examples.votes);
+
+        let newLogos:any = JSON.parse(JSON.stringify (store.examples.logos))
+
+        newLogos.ids.map((ids)=>{
+          newLogos.entities[ids].avg = 0
+          newLogos.entities[ids].niveauDaccord = 0
+        })
+
+        return new ActionLogosUpsertAll({logos:newLogos});
       }
       //selectAllJeu
     )

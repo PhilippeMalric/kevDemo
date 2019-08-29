@@ -27,6 +27,8 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Logos_KEY } from '@app/examples/crud/logos.effects';
 import { Router } from '@angular/router';
 import { BoundElementProperty } from '@angular/compiler';
+import { ActionVoteUpsertAll,ActionVoteUpsertAll2 } from '../../crud/vote.actions';
+
 
 @Component({
   selector: 'app-graph',
@@ -71,7 +73,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
     this.dataS.store.pipe(select(selectAllLogos)).subscribe((logos: any) => {
       this.height = '' + (logos.length * 100 + 100);
       this.ref.markForCheck();
-      console.log('logos');
+      console.log('logos!!');
       console.log(logos);
       let tab = Object.keys(logos);
       let dict = logos;
@@ -275,6 +277,12 @@ export class GraphComponent implements OnInit, AfterViewInit {
           );
         })
       })
+    );
+  }
+
+  resetDb() {
+    this.store.dispatch(
+      new ActionVoteUpsertAll2({ votes: [] })
     );
   }
 

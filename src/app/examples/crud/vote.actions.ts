@@ -5,6 +5,7 @@ export enum VoteActionTypes {
   UPSERT_ONE = '[vote] Upsert_one',
   UPSERT_ALL_FromFirebase = '[vote] Upsert_all_FromFirebase',
   UPSERT_ALL = '[vote] Upsert_all_votes_FromFirebase',
+  UPSERT_ALL2 = '[vote] Upsert_all',
   UPDATE = '[vote] Update',
   RESET = '[vote] Reset',
   DELETE_ONE = '[vote] Delete_one_carte'
@@ -12,6 +13,11 @@ export enum VoteActionTypes {
 
 export class ActionVoteUpsertAll implements Action {
   readonly type = VoteActionTypes.UPSERT_ALL;
+  constructor(readonly payload: { votes: any }) {}
+}
+
+export class ActionVoteUpsertAll2 implements Action {
+  readonly type = VoteActionTypes.UPSERT_ALL2;
   constructor(readonly payload: { votes: any }) {}
 }
 
@@ -45,4 +51,5 @@ export type VoteActions =
   | ActionVoteUpsertOne
   | ActionVoteDeleteOne
   | ActionVoteUpsertAll
-  | ActionVoteUpsertAllFromFirebase;
+  | ActionVoteUpsertAllFromFirebase
+  | ActionVoteUpsertAll2;

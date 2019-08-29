@@ -41,6 +41,10 @@ export function voteReducer(
 
       return voteAdapter.upsertMany(votes, state);
 
+    case VoteActionTypes.UPSERT_ALL2:
+      return voteAdapter.removeAll(state);
+
+
     case VoteActionTypes.UPSERT_ONE:
       return voteAdapter.upsertOne(action.payload.vote, state);
 
