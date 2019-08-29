@@ -10,7 +10,7 @@ import { VoteService } from './vote.service';
 import { VoteState, Vote } from './vote.model';
 import { VoteActionTypes } from './vote.actions';
 import { of } from 'rxjs';
-import { ActionLogosUpsertOne, ActionLogosUpsertAll } from './logos.actions';
+import { ActionLogosUpsertOne, ActionLogosUpsertAll, ActionLogosUpsertOneLocal, ActionLogosUpsertAllFromVote } from './logos.actions';
 import { Logo } from './logos.model';
 
 export const TODOS_KEY = 'EXAMPLES.TODOS';
@@ -54,78 +54,51 @@ export class VotesEffects {
 
   @Effect()
   calculAvg = this.actions$.pipe(
-    ofType(VoteActionTypes.UPSERT_ONE),
+    ofType(VoteActionTypes.UPSERT_ALL),
     withLatestFrom(this.store),
     map(([data, store]) => {
-      console.log('data to firebase!!');
-      console.log('data2');
+      console.log('data UPSERT_ALL');
       console.log(data);
 
-      console.log('store2');
+      console.log('store UPSERT_ALL');
       console.log(store);
 
-      let tabNiveau = [];
+
 
       let logos2 = JSON.parse(JSON.stringify(store.examples.logos));
       let votes2 = JSON.parse(JSON.stringify(store.examples.votes));
-      logos2.entities[
-        data['payload']['vote']['logo']
-      ].niveauDaccord = data['payload']['vote']['niveauDaccord'];
 
-      logos2.entities[
-        data['payload']['vote']['logo']
-      ].commentaire =  data['payload']['vote']['commentaire'];
+      let avgDict = {}
 
-      let logId =
-      logos2.entities[data['payload']['vote']['logo']].id;
-      console.log('logId');
-      console.log(logId);
-      for (let id of votes2.ids) {
-        let logIdTemp = votes2.entities[id].logo;
-        console.log('loglogIdTempId');
-        console.log(logIdTemp);
-        if (logIdTemp == logId) {
-          let vote = votes2.entities[id];
-          console.log(vote);
-          tabNiveau.push(vote.niveauDaccord);
+      for(let logIdTemp of logos2.ids){
+        let tabNiveau = [];
+        for (let voteId of votes2.ids) {
+
+          console.log('loglogIdTempId');
+          console.log(logIdTemp);
+          if (logIdTemp == votes2.entities[voteId].logo) {
+            let vote = votes2.entities[voteId];
+            console.log(vote);
+            tabNiveau.push(vote.niveauDaccord);
+          }
         }
-      }
-      let avg = this.getAvg(tabNiveau);
-      console.log('avg');
-      console.log(avg);
-      logos2.entities[data['payload']['vote']['logo']].avg = avg;
+        avgDict[logIdTemp] = this.getAvg(tabNiveau);
+        logos2.entities[logIdTemp].avg = avgDict[logIdTemp]
 
-      let newLogo: { logo: Logo } = {
-        logo: logos2.entities[data['payload']['vote']['logo']]
+      }
+
+      let newLogos: { logos: Logo[] } = {
+        logos: logos2.ids.map((id)=>logos2.entities[id])
       };
 
-      console.log('newLogo');
-      console.log(newLogo);
+      console.log('newLogos');
+      console.log(newLogos);
 
-      return new ActionLogosUpsertOne(newLogo);
+      return new ActionLogosUpsertAllFromVote(newLogos)
+
     })
   );
 
-  @Effect({ dispatch: false })
-  addVotesToFirebase = this.actions$.pipe(
-    ofType(VoteActionTypes.UPSERT_ONE),
-    withLatestFrom(this.store),
-    tap(
-      ([data, store]) => {
-        console.log('data to firebase!!');
-        console.log('data');
-        console.log(data);
-
-        console.log('store');
-        console.log(store);
-        console.log('votes');
-        console.log(store.examples.votes);
-
-        this.voteService.addVoteToFirebase(store.examples.votes);
-      }
-      //selectAllJeu
-    )
-  );
 
 
   @Effect({ dispatch: false })

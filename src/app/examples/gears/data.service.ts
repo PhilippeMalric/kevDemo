@@ -71,7 +71,7 @@ convertVoteCommentaire(obj,logo:Logo,auth,authEmail){
       return   obj[1].examples.votes.entities[authEmail+"-"+logo.id].commentaire
     }
     else{
-      return 0
+      return ""
     }
 
   }
@@ -80,7 +80,7 @@ convertVoteCommentaire(obj,logo:Logo,auth,authEmail){
       return   obj[1].examples.votes.entities["DEMO-"+logo.id].commentaire
      }
      else{
-       return 0
+       return ""
      }
   }
 }

@@ -67,8 +67,8 @@ modifyCartesToFirebase(id,carte:Votes){
   }
 
   addVoteToFirebase(votes) {
-    //console.log('votes');
-    //console.log(votes);
+    console.log('addVoteToFirebase');
+    console.log(votes);
 
     const collection: AngularFirestoreCollection<Vote> = this.af.collection(
       'votes'

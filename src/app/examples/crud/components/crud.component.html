@@ -1,13 +1,13 @@
 <div class="container" rtl>
   <h1 *ngIf="authName$ | async">{{authName$ | async}}</h1>
   <h2>Liste des logos!</h2>
-  <h3 *ngIf="myLogos.length == 0">Veuillez patientez (quelques secondes (10 secondes maximum!))</h3>
+  <h3 *ngIf="(myLogos$|async)?.length == 0">Veuillez patientez (quelques secondes (10 secondes maximum!))</h3>
   <div class="row">
     <div class="col-md-6">
 
-      <mat-card *ngFor="let logo of myLogos;let i = index; trackBy:trackByIndex;"
+      <mat-card *ngFor="let logo of myLogos$ | async;let i = index; trackBy:trackByIndex;"
          data-testid="crud-item"
-        [ngClass]="myLogos[i].style + ' routeAnimationsElements'" >
+        [ngClass]="logo.style + ' routeAnimationsElements'" >
 
       <mat-card-header>
         Moyenne des votes de : {{logo.texte}}
@@ -16,7 +16,7 @@
         <mat-slider class="col-sm-2"
         class="example-margin"
         [max]="5"
-        [min]="0"
+        [min]="1"
         [step]="1"
         [thumbLabel]="false"
         [tickInterval]="1"
@@ -35,7 +35,7 @@
           <mat-slider class="col-sm-2"
           class="example-margin"
           [max]="5"
-          [min]="0"
+          [min]="1"
           [step]="1"
           [thumbLabel]="true"
           [tickInterval]="1"
@@ -47,7 +47,7 @@
         </div>
 
 
-          <textarea matInput maxlength="300" name="text-{{i}}"  placeholder="Commentaires"  (keyup)="textChange($event,i)">{{logo.commentaire}}</textarea>
+          <textarea matInput maxlength="300" name="text-{{i}}"  placeholder="Commentaires"  (keyup)="onTextInputChange($event,i)">{{logo.commentaire}}</textarea>
 
         <!--
 
@@ -59,7 +59,7 @@
         </mat-form-field>
         -->
         <mat-card-actions>
-          <button mat-raised-button (click)="launch(logo)">Envoyer</button>
+          <button mat-raised-button (click)="launch(i)">Envoyer</button>
         </mat-card-actions>
 
       </mat-card>

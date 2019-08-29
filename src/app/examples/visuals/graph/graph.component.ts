@@ -70,10 +70,10 @@ export class GraphComponent implements OnInit, AfterViewInit {
   }
 
   getData() {
-    this.dataS.store.pipe(select(selectAllLogos)).subscribe((logos: any) => {
+    this.store.pipe(select(selectAllLogos)).subscribe((logos: any) => {
       this.height = '' + (logos.length * 100 + 100);
       this.ref.markForCheck();
-      console.log('logos!!');
+      console.log('logos!! from graph');
       console.log(logos);
       let tab = Object.keys(logos);
       let dict = logos;
@@ -204,10 +204,10 @@ export class GraphComponent implements OnInit, AfterViewInit {
             node.id,
             node.texte,
             node.img,
-            node.commentaire,
+            node.niveau,
             '',
             false,
-            '',
+            node.commentaire,
             node.x,
             node.y,
             node.avg

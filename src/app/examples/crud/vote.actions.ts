@@ -8,8 +8,16 @@ export enum VoteActionTypes {
   UPSERT_ALL2 = '[vote] Upsert_all',
   UPDATE = '[vote] Update',
   RESET = '[vote] Reset',
-  DELETE_ONE = '[vote] Delete_one_carte'
+  DELETE_ONE = '[vote] Delete_one_carte',
+  VoteForId = '[vote] new_Vote'
 }
+
+
+export class ActionVoteForId implements Action {
+  readonly type = VoteActionTypes.VoteForId;
+  constructor(readonly payload: { id: any, isAuth:any }) {}
+}
+
 
 export class ActionVoteUpsertAll implements Action {
   readonly type = VoteActionTypes.UPSERT_ALL;
@@ -45,6 +53,9 @@ export class ActionVoteReset implements Action {
   readonly type = VoteActionTypes.RESET;
 }
 
+
+
+
 export type VoteActions =
   | ActionVoteUpdate
   | ActionVoteReset
@@ -52,4 +63,5 @@ export type VoteActions =
   | ActionVoteDeleteOne
   | ActionVoteUpsertAll
   | ActionVoteUpsertAllFromFirebase
-  | ActionVoteUpsertAll2;
+  | ActionVoteUpsertAll2
+  | ActionVoteForId;

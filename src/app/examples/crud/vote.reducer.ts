@@ -54,6 +54,18 @@ export function voteReducer(
     case VoteActionTypes.RESET:
       return initialState;
 
+    case VoteActionTypes.VoteForId:
+      console.log("action.payload.id VoteForId")
+      console.log(action.payload.id)
+      console.log("state")
+      console.log(state)
+
+    if(action.payload.isAuth)
+
+
+      return state;
+
+
     default:
       return state;
   }

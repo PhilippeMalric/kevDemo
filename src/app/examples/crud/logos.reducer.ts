@@ -25,9 +25,39 @@ export function logoReducer(
   action: LogoActions
 ): LogoState {
   switch (action.type) {
+
+    case LogoActionTypes.CHANGE_NIVEAU:
+      console.log('CHANGE NIVEAU');
+      console.log(action.payload["niveau"]);
+      if(state){
+        let newLogo:Logo = JSON.parse(JSON.stringify(state.entities[state.ids[action.payload["id"]]]))
+        newLogo.niveauDaccord =   action.payload["niveau"]
+        console.log("newLogo");
+        console.log(newLogo);
+
+        let state2 = logoAdapter.upsertOne(newLogo, state);
+        console.log("state2")
+        console.log(state2)
+        return state2
+      }
+      else{
+        return state
+      }
+
+
     case LogoActionTypes.UPSERT_ONE:
-      //console.log('LogoUpserted');
+      console.log('LogoUpserted');
+      console.log(action.payload.logo);
       return logoAdapter.upsertOne(action.payload.logo, state);
+
+    case LogoActionTypes.UPSERT_ONE_Local:
+      console.log('LogoUpserted');
+      console.log(action.payload.logo);
+      let newState = logoAdapter.upsertOne(action.payload.logo, state);
+      console.log('newState');
+      console.log(newState);
+      return newState
+
 
     case LogoActionTypes.UPSERT_ALL:
       console.log(action.payload.logos)
@@ -36,15 +66,13 @@ export function logoReducer(
     case LogoActionTypes.UPSERT_ALL2:
       return logoAdapter.upsertMany(action.payload.logos, state);
 
+      case LogoActionTypes.UpsertAllFromVote:
+          return logoAdapter.upsertMany(action.payload.logos, state);
+
+
     case LogoActionTypes.DELETE_ONE:
       return logoAdapter.removeOne(action.payload.id, state);
 
-    case LogoActionTypes.CHANGE_NIVEAU:
-      let logoState: LogoState = JSON.parse(JSON.stringify(state));
-      //console.log(logoState.entities);
-      //console.log(action.payload.id);
-      logoState.entities[action.payload.id].niveauDaccord += 1;
-      return logoState;
     /*
         let votes = action.payload.book.votes.slice(0);
         let votes2 = votes.filter(v=>v.nom != action.payload.vote.nom)

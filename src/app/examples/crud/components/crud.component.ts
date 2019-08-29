@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 
 import { selectEmail } from "../../../core/auth/auth.selectors"
@@ -18,7 +18,9 @@ import { Logo } from '../logos.model';
 import {
   ActionLogosUpsertOne,
   ActionLogosDeleteOne,
-  ActionLogosLikeOne
+  ActionLogosLikeOne,
+  ActionLogosUpsertOneLocal,
+  ActionLogosChangeONENiveau
 } from '../logos.actions';
 import { selectSelectedLogos, selectAllLogos } from '../logos.selectors';
 import { AngularFirestore } from 'angularfire2/firestore';
@@ -27,11 +29,6 @@ import { Logos_KEY, DICT_uID_FB } from '../logos.effects';
 import { DataService } from '@app/examples/gears/data.service';
 import { Node } from '@app/examples/d3';
 import { JeuState } from '@app/examples/authenticated/jeu.model';
-import {
-  ActionJeuUpsertOneCarte,
-  ActionJeuUpsertAllCartes
-} from '@app/examples/authenticated/jeu.actions';
-import { JsonPipe } from '@angular/common';
 import { Vote, VoteState } from '../vote.model';
 import { ActionVoteUpsertAll, ActionVoteUpsertOne } from '../vote.actions';
 import { selectAllVote } from '../vote.selectors';
@@ -45,7 +42,7 @@ export class CrudComponent {
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
 
   logoFormGroup = this.fb.group(CrudComponent.createLogo());
-  myLogos: Logo[] = [];
+  myLogos$: Observable<Logo[]> = of([]);
   selectedLogo$: Observable<Logo> = this.store.pipe(
     select(selectSelectedLogos)
   );
@@ -69,7 +66,6 @@ export class CrudComponent {
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    private store2: Store<AppState>,
     private afs: AngularFirestore,
     public store: Store<State>,
     public fb: FormBuilder,
@@ -78,19 +74,22 @@ export class CrudComponent {
     private voteStore: Store<VoteState>,
     private dataS: DataService
   ) {
-    this.authName$ = this.store2.pipe(select(selectEmail));
+    this.authName$ = this.store.pipe(select(selectEmail));
     this.authName$.pipe(take(1)).subscribe(user => {
       this.authName = user;
       console.log('authName');
       console.log(user);
     });
 
-    this.store.pipe(select(selectAllLogos)).subscribe(logos => {
-      console.log('myLogos');
-      console.log(logos);
-      this.myLogos = logos;
-    });
+    this.myLogos$ =  this.store.pipe(
+      select(selectAllLogos),
+      tap((logos=>{
+        console.log("Change logos")
+        console.log(logos)
+      }))
 
+
+    )
     /*
       ,
       tap((books: Book[])=> {
@@ -129,36 +128,40 @@ export class CrudComponent {
   onInputChange(event, i) {
     console.log('event');
     console.log(event);
-    let newMyLogos = JSON.parse(JSON.stringify(this.myLogos));
 
-    newMyLogos[i].niveauDaccord = event.value;
 
-    this.myLogos = newMyLogos;
 
-    console.log(this.myLogos);
+    if(event.value){
+      this.store.dispatch(new ActionLogosChangeONENiveau({niveau:event.value,id:i}))
+    }
+   /*
+    this.myLogos$.pipe(take(1)).subscribe(
+      (logos:any[])=>{
+        console.log("event.value")
+        console.log(event.value)
+        let logo = JSON.parse(JSON.stringify(logos[i]))
+        logo.niveauDaccord = event.value;
+
+
+          return 1
+      }
+    )
+*/
   }
 
   onTextInputChange(event, i) {
     console.log('event');
     console.log(event);
-    let newMyLogos = JSON.parse(JSON.stringify(this.myLogos));
-
-    newMyLogos[i].commentaire = event.srcElement.value;
-
-    this.myLogos = newMyLogos;
-
-    console.log(this.myLogos);
-  }
 
 
-  textChange(event, i) {
-    console.log('event');
-    console.log(event);
-    this.myLogos[i] = Object.assign({}, this.myLogos[i], {
-      commentaire: event.srcElement.value
-    });
-    console.log(this.myLogos[i]);
-  }
+    this.myLogos$.pipe(take(1)).subscribe(
+      (logos:any[])=>{
+        let logo = JSON.parse(JSON.stringify(logos[i]))
+        logo.commentaire = event.srcElement.value;
+        this.store.dispatch(new ActionLogosUpsertOneLocal({logo:logo}))
+    }
+    )
+}
 
   select(logo: Logo) {
     console.log('selected');
@@ -169,37 +172,48 @@ export class CrudComponent {
     this.router.navigate(['logoBattle/crud', this.selectedLogo]);
   }
 
-  launch(logo: Logo) {
-    console.log('book223');
-    console.log(logo);
-    console.log(this.authName);
-    if (this.authName) {
-      console.log(this.authName);
-      this.voteStore.dispatch(
-        new ActionVoteUpsertOne({
-          vote: {
-            id: this.authName + '-' + logo.id,
-            nom: this.authName,
-            logo: logo.id,
-            niveauDaccord: logo.niveauDaccord,
-            commentaire: logo.commentaire
-          }
-        })
-      );
-    } else {
-      let vote = {
-        vote: {
-          id: 'DEMO-' + logo.id,
-          nom: 'test',
-          logo: logo.id,
-          niveauDaccord: logo.niveauDaccord,
-          commentaire: logo.commentaire
+
+  //Apparament myLogo n'est pas ajour!
+  launch(i: number) {
+    this.store.pipe(take(1)).subscribe(
+      (state:State)=>{
+        console.log("lauch state");
+        console.log(state);
+
+        let id = state.examples.logos.ids[i]
+        let logo = state.examples.logos.entities[id]
+        console.log("store logo!!!!!");
+        console.log(logo);
+        console.log(this.authName);
+        if (this.authName) {
+          console.log(this.authName);
+          this.store.dispatch(
+            new ActionVoteUpsertOne({
+              vote: {
+                id: this.authName + '-' + logo.id,
+                nom: this.authName,
+                logo: logo.id,
+                niveauDaccord: logo.niveauDaccord,
+                commentaire: logo.commentaire
+              }
+            })
+          );
+        } else {
+          let vote = {
+            vote: {
+              id: 'DEMO-' + logo.id,
+              nom: 'test',
+              logo: logo.id,
+              niveauDaccord: logo.niveauDaccord,
+              commentaire: logo.commentaire
+            }
+          };
+          console.log('vote');
+          console.log(vote);
+          this.voteStore.dispatch(new ActionVoteUpsertOne(vote));
         }
-      };
-      console.log('vote');
-      console.log(vote);
-      this.voteStore.dispatch(new ActionVoteUpsertOne(vote));
-    }
+
+    })
 
     //this.store.dispatch(new ActionLogosUpsertOne({ logo: logo }));
     //this.jeuStore.dispatch(new ActionJeuUpsertAllCartes({ carte: {valeur:logo.niveauDaccord,couleur:"",noms:[]} }));

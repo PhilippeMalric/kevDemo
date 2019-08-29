@@ -33,14 +33,15 @@ export class LogosEffects {
   persistLogos = this.actions$.pipe(
     ofType(
       LogoActionTypes.UPSERT_ONE,
-      LogoActionTypes.DELETE_ONE,
-      LogoActionTypes.CHANGE_NIVEAU
+      LogoActionTypes.DELETE_ONE
     ),
     withLatestFrom(this.store),
 
     tap(([actions, store]) => {
       console.log('store111');
       console.log(store);
+      console.log("actions['payload']['logo']");
+      console.log(actions['payload']['logo']);
 
       this.afs
         .collection('logos')
@@ -54,17 +55,25 @@ export class LogosEffects {
           console.log(store.auth.uid);
           if (store.auth.uid && store.auth.uid in values) {
             let id = values[store.auth.uid];
-            const collection: AngularFirestoreCollection<
-              LogoState
-            > = this.afs.collection('logos');
-            collection.doc(id).update(store);
+            const collection: AngularFirestoreCollection<LogoState> = this.afs.collection('logos');
+
+            let newStore = JSON.parse(JSON.stringify(store))
+
+            newStore.examples.logos.entities[actions['payload']['logo']['id']] = actions['payload']['logo']
+
+            collection.doc(id).update(newStore);
           } else {
             console.log('User not in index : ' + DICT_uID_FB);
             console.log('Or not login');
             const collection: AngularFirestoreCollection<LogoState> = this.afs.collection('logos');
             console.log('collection');
+
+            let newStore = JSON.parse(JSON.stringify(store))
+
+            newStore.examples.logos.entities[actions['payload']['logo']['id']] = actions['payload']['logo']
+
             console.log(collection);
-            collection.doc(Logos_KEY).update(store);
+            //collection.doc(Logos_KEY).update(newStore);
           }
         });
     })
@@ -100,7 +109,7 @@ export class LogosEffects {
           console.log(store);
 
           const collection: AngularFirestoreCollection<LogoState> = this.afs.collection('logos');
-          collection.doc(Logos_KEY).update(store);
+          //collection.doc(Logos_KEY).update(store);
           console.log('User not in index : ' + DICT_uID_FB);
           //}
         });
