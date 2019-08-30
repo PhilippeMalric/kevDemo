@@ -91,8 +91,7 @@ center(){
   let xs = this.nodes.map((node)=>{
   return node.x
   })
-  this.x2 = this.options.width
-  this.y2 = this.options.height
+
   let max = 0
   let max_i = 0
 
@@ -106,6 +105,8 @@ center(){
   }
   this.y  = this.nodes[max_i].y - (this.graph.options.height / 2)
   this.x = max - (this.graph.options.width/2)
+  this.x2 = this.x + this.options.width
+  this.y2 = this.y + this.options.height
   this.ref.markForCheck();
 
 }
