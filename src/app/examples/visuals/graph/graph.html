@@ -1,12 +1,12 @@
 <div class="center">
 
-<svg #svg [attr.width]="_options.width" [attr.height]="_options.height">
+<svg #svg [attr.width]="_options.width" [attr.height]="_options.height" [attr.viewBox]="x+' '+y+' '+x2+' '+y2">
 
 
     <g [zoomableOf]="svg">
-      <rect  x="150" y="0" width="1050" [attr.height]="height" style="fill:rgba(0, 0, 255, 0.404);stroke-width:3;stroke:rgb(0,0,0)" />
+      <rect  x="150" y="0" width="6050" [attr.height]="height" style="fill:rgb(15, 15, 15);stroke-width:3;stroke:rgb(0,0,0)" />
       <rect  x="200" y="0" width="30" [attr.height]="height" style="fill:rgb(255, 0, 0);stroke-width:3;stroke:rgb(151, 0, 0)" />
-      <rect  x="1200" y="0" width="50" [attr.height]="height" style="fill:rgb(53, 53, 53);stroke-width:3;stroke:rgb(53, 53, 53)" />
+      <rect  x="6200" y="0" width="75" [attr.height]="height" style="fill:rgb(53, 53, 53);stroke-width:3;stroke:rgb(78, 76, 76)" />
       <g [linkVisual2]="link" *ngFor="let link of links"></g>
       <g [nodeVisual]="node" *ngFor="let node of nodes"
           [draggableNode]="node" [draggableInGraph]="graph"
@@ -49,6 +49,12 @@
   [ngClass]="routeAnimationsElements" (click)="resetDb()">
   ResetDb
 </button>
+
+<button type="button" mat-raised-button color="accent"
+  [ngClass]="routeAnimationsElements" (click)="center()">
+  Center
+</button>
+
 </div>
 
 

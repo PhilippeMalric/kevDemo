@@ -21,7 +21,8 @@ import { Logo } from '@app/examples/crud/logos.model';
       <svg:text
           class="node-name"
           y="-35"
-          [attr.font-size]="node.fontSize">
+          [attr.font-size]="node.fontSize"
+          >
         {{node.label}}
       </svg:text>
     </svg:g>

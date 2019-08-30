@@ -20,7 +20,8 @@ import {
   ActionLogosDeleteOne,
   ActionLogosLikeOne,
   ActionLogosUpsertOneLocal,
-  ActionLogosChangeONENiveau
+  ActionLogosChangeONENiveau,
+  ActionLogosSaveONE
 } from '../logos.actions';
 import { selectSelectedLogos, selectAllLogos } from '../logos.selectors';
 import { AngularFirestore } from 'angularfire2/firestore';
@@ -272,7 +273,7 @@ export class CrudComponent {
   save() {
     if (this.logoFormGroup.valid) {
       const logo = this.logoFormGroup.value;
-      this.store.dispatch(new ActionLogosUpsertOne({ logo: logo }));
+      this.store.dispatch(new ActionLogosSaveONE({ logo: logo }));
       this.isEditing = false;
       console.log('logo.id');
       console.log(logo.id);

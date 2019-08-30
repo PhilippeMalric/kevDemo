@@ -45,6 +45,15 @@ export class GraphComponent implements OnInit, AfterViewInit {
 
   height: string;
 
+  x:number
+  y:number
+
+  x2:number
+  y2:number
+
+  scx: number;
+  scy: number;
+
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.graph.initSimulation(this.options);
@@ -59,6 +68,13 @@ export class GraphComponent implements OnInit, AfterViewInit {
     private afs: AngularFirestore,
     private router: Router
   ) {
+    this.x = 0.5 * this.options.width
+    this.y = 0
+
+    this.x2 = this.options.width
+    this.y2 = this.options.height * 2
+
+
     this.links = [];
     router.events.subscribe(val => {
       if (this.nodes) {
@@ -68,6 +84,31 @@ export class GraphComponent implements OnInit, AfterViewInit {
     });
     //this.getDataOnce()
   }
+
+
+
+center(){
+  let xs = this.nodes.map((node)=>{
+  return node.x
+  })
+  this.x2 = this.options.width
+  this.y2 = this.options.height
+  let max = 0
+  let max_i = 0
+
+  for(let i in xs)
+  {
+    if(xs[i]>max){
+      max = xs[i]
+      max_i = Number(i)
+    }
+
+  }
+  this.y  = this.nodes[max_i].y - (this.graph.options.height / 2)
+  this.x = max - (this.graph.options.width/2)
+  this.ref.markForCheck();
+
+}
 
   getData() {
     this.store.pipe(select(selectAllLogos)).subscribe((logos: any) => {
@@ -248,7 +289,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
         );
 
         let filtra = this.nodes.filter(node => {
-          return node.x > 1200;
+          return node.x > 6200;
         });
         if (filtra.length > 0) {
           fin = true;
@@ -260,9 +301,19 @@ export class GraphComponent implements OnInit, AfterViewInit {
   }
 
   reset() {
+    this.x = 0.5 * this.options.width
+    this.y = 0
+
+    this.x2 = this.options.width
+    this.y2 = this.options.height * 2
     this.store.dispatch(
       new ActionLogosUpsertAll2({
         logos: this.nodes.map((node, i) => {
+          let txt = ""
+          if(node.texte){
+            txt = node.texte
+          }
+
           return new Logo(
             node.id,
             node.label,
@@ -270,7 +321,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
             node.niveau,
             '',
             false,
-            "123",
+            txt,
             200,
             i * 100 + 100,
             node.avg
@@ -278,6 +329,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
         })
       })
     );
+    this.ref.markForCheck();
   }
 
   resetDb() {

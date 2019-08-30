@@ -8,7 +8,8 @@ export enum LogoActionTypes {
   UPSERT_ALL2 = '[logos] Upsert All 2',
   DELETE_ONE = '[logos] Delete One',
   CHANGE_NIVEAU = '[logos] Change_niveau',
-  UpsertAllFromVote = '[logos] Upsert All from vote'
+  UpsertAllFromVote = '[logos] Upsert All from vote',
+  SAVE = '[logos] SAVE ONE'
 }
 
 export class ActionLogosUpsertOne implements Action {
@@ -52,6 +53,10 @@ export class ActionLogosUpsertAllFromVote implements Action {
   constructor(readonly payload: { logos: Logo[] }) {}
 }
 
+export class ActionLogosSaveONE implements Action {
+  readonly type = LogoActionTypes.SAVE;
+  constructor(readonly payload: { logo: Logo }) {}
+}
 
 export type LogoActions =
   | ActionLogosUpsertOne
@@ -61,4 +66,5 @@ export type LogoActions =
   | ActionLogosUpsertAll2
   | ActionLogosUpsertOneLocal
   | ActionLogosChangeONENiveau
-  | ActionLogosUpsertAllFromVote;
+  | ActionLogosUpsertAllFromVote
+  | ActionLogosSaveONE;

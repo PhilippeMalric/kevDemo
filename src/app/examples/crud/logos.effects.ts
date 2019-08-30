@@ -32,8 +32,7 @@ export class LogosEffects {
   @Effect({ dispatch: false })
   persistLogos = this.actions$.pipe(
     ofType(
-      LogoActionTypes.UPSERT_ONE,
-      LogoActionTypes.DELETE_ONE
+      LogoActionTypes.SAVE
     ),
     withLatestFrom(this.store),
 
@@ -73,7 +72,7 @@ export class LogosEffects {
             newStore.examples.logos.entities[actions['payload']['logo']['id']] = actions['payload']['logo']
 
             console.log(collection);
-            //collection.doc(Logos_KEY).update(newStore);
+            collection.doc(Logos_KEY).update(newStore);
           }
         });
     })
@@ -109,7 +108,7 @@ export class LogosEffects {
           console.log(store);
 
           const collection: AngularFirestoreCollection<LogoState> = this.afs.collection('logos');
-          //collection.doc(Logos_KEY).update(store);
+          collection.doc(Logos_KEY).update(store);
           console.log('User not in index : ' + DICT_uID_FB);
           //}
         });

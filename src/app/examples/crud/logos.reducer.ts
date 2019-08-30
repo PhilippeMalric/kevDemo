@@ -44,6 +44,10 @@ export function logoReducer(
         return state
       }
 
+      case LogoActionTypes.SAVE:
+          console.log('LogoUpserted');
+          console.log(action.payload.logo);
+          return logoAdapter.upsertOne(action.payload.logo, state);
 
     case LogoActionTypes.UPSERT_ONE:
       console.log('LogoUpserted');
