@@ -17,11 +17,12 @@ export class DataService {
   scian: any;
   cnp: any;
   cnpToScian: any;
-
+  lastX: Object;
   logoKey: Subject<string>;
 
   constructor(private afs: AngularFirestore, public store: Store<State>) {
     this.logoKey = new BehaviorSubject<string>(Logos_KEY);
+    this.lastX = {}
   }
 
   click() {
@@ -85,7 +86,7 @@ convertVoteCommentaire(obj,logo:Logo,auth,authEmail){
   }
 }
 
-  fireStoreObservable(key: string) {
+  fireStoreLogoObs(key: string) {
     console.log('Key2 : ' + key);
 
     return this.afs
@@ -94,14 +95,67 @@ convertVoteCommentaire(obj,logo:Logo,auth,authEmail){
       .valueChanges()
       .pipe(
         tap((store:any) => {
-          console.log('!!dispatch : ');
-          console.log(store);
+          //console.log('!!dispatch : ');
+          //console.log(store);
         }),
         withLatestFrom(this.store),
         map((obj: any) => {
 
         let newEntities = {}
         let newLogo = JSON.parse(JSON.stringify(obj[0].examples.logos))
+        /*
+        console.log("newLogo")
+        console.log(newLogo)
+        console.log("obj")
+        console.log(obj)
+        */
+/*
+        obj[0].examples.logos.ids.map((id)=>{
+
+          if(obj[0].examples.logos.entities[id] && obj[1].examples.logos.entities[id]){
+            if(obj[0].examples.logos.entities[id].x < obj[1].examples.logos.ids){
+              newLogo.entities[id].x = obj[0].examples.logos.entities[id].x
+             }
+             else{
+              newLogo.entities[id].x = obj[1].examples.logos.entities[id].x
+             }
+          }
+
+        })
+*/
+
+
+
+/*
+
+          let xs = newLogo.ids.map((id)=>
+          {
+            newLogo.entities[id].x
+          })
+
+          let debut   = xs.filter((x)=>{
+
+            return x == 200
+
+          }).length == 0
+
+        newLogo.ids.map((id)=>
+        {
+          //lag
+          if(!debut && (id in this.lastX  && this.lastX[id] > newLogo.entities[id].x)){
+            newLogo.entities[id].x = this.lastX[id]
+          }
+
+        })
+
+        newLogo.ids.map((id)=>
+        {
+          this.lastX[id] = newLogo.entities[id].x
+
+        })
+
+*/
+
         let tab = newLogo.ids.map((id => newLogo.entities[id] ))
         if(obj[1].auth.isAuthenticated){
           tab.map((logo => {
@@ -166,8 +220,8 @@ convertVoteCommentaire(obj,logo:Logo,auth,authEmail){
       tap(logos => {
 
           let logos3 = JSON.parse(JSON.stringify(logos))
-          console.log('dispatch : ');
-          console.log(logos)
+          //console.log('dispatch : ');
+          //console.log(logos)
           for (let i in logos){
             logos3[i].niveauDaccord = 1
           }

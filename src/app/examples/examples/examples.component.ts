@@ -59,14 +59,15 @@ export class ExamplesComponent implements OnInit {
     }
     this.votes$ = this.dataS.fireStoreVotes();
     this.subscription2 = this.votes$.subscribe((votes: any) => {
-      console.log("fireStoreVotes")
-      console.log(votes)
+      //console.log("fireStoreVotes")
+      //console.log(votes)
       this.store.dispatch(
         new ActionVoteUpsertAll({ votes: votes })
       );
     });
     this.subscription = null;
     this.changeEntityLogo();
+    /*
     const inter1 = setInterval(() => {
       if (dataS.logoKey) {
         dataS.logoKey.subscribe(key => {
@@ -78,6 +79,7 @@ export class ExamplesComponent implements OnInit {
         clearInterval(inter1);
       }
     }, 1000);
+    */
   }
 
   changeEntityLogo() {
@@ -85,7 +87,7 @@ export class ExamplesComponent implements OnInit {
       this.subscription.unsubscribe();
     }
 
-    this.entitiesLogo$ = this.dataS.fireStoreObservable(this.key);
+    this.entitiesLogo$ = this.dataS.fireStoreLogoObs(this.key);
     this.subscription = this.entitiesLogo$.subscribe((logos: Logo[]) => {
       //console.log('new fireStoreObservable logos');
       //console.log(logos);

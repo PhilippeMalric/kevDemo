@@ -15,12 +15,13 @@ export class Node implements d3.SimulationNodeDatum {
   label?: string | null;
   box?: any | null;
   avg?: number | null;
-
+  win?: number | null;
   id: string;
   linkCount: number = 0;
   niveau: any;
-
-  constructor(id, img, label, niveau, x, y, avg) {
+  p?:string
+  pos?:string
+  constructor(id, img, label, niveau, x, y, avg, win,texte="") {
     this.id = id;
     this.img = img;
     this.label = label;
@@ -29,6 +30,8 @@ export class Node implements d3.SimulationNodeDatum {
     this.x = x;
     this.y = y;
     this.avg = avg;
+    this.win = win;
+    this.texte = texte
   }
 
   normal = () => {

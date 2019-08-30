@@ -13,5 +13,23 @@
   text-anchor: middle;
   alignment-baseline: central;
   font-weight: 300;
-  fill: white;
+  fill: rgb(0, 8, 82);
+}
+
+.node-win{
+
+  font-family: 'Lato';
+  text-anchor: middle;
+  alignment-baseline: central;
+  font-weight: 300;
+  fill: rgb(0, 0, 0);
+}
+
+.node-position{
+
+  font-family: 'Times New Roman';
+  text-anchor: middle;
+  alignment-baseline: central;
+  font-weight: 300;
+  fill: rgb(4, 36, 0);
 }

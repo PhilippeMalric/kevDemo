@@ -9,7 +9,8 @@ export enum LogoActionTypes {
   DELETE_ONE = '[logos] Delete One',
   CHANGE_NIVEAU = '[logos] Change_niveau',
   UpsertAllFromVote = '[logos] Upsert All from vote',
-  SAVE = '[logos] SAVE ONE'
+  SAVE = '[logos] SAVE ONE',
+  WIN = '[logos] WIN'
 }
 
 export class ActionLogosUpsertOne implements Action {
@@ -58,6 +59,11 @@ export class ActionLogosSaveONE implements Action {
   constructor(readonly payload: { logo: Logo }) {}
 }
 
+export class ActionLogosAddWin implements Action {
+  readonly type = LogoActionTypes.WIN;
+  constructor(readonly payload: { logo: Logo }) {}
+}
+
 export type LogoActions =
   | ActionLogosUpsertOne
   | ActionLogosUpsertAll
@@ -67,4 +73,5 @@ export type LogoActions =
   | ActionLogosUpsertOneLocal
   | ActionLogosChangeONENiveau
   | ActionLogosUpsertAllFromVote
-  | ActionLogosSaveONE;
+  | ActionLogosSaveONE
+  | ActionLogosAddWin;

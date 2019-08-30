@@ -65,24 +65,28 @@ export class D3Service {
 
     zoomed = () => {
       const transform = d3Event.transform;
+
       container.attr(
         'transform',
         'translate(' +
-          transform.x +
+        transform.x +
           ',' +
           transform.y +
           ') scale(' +
           transform.k +
           ')'
       );
+
+
+
     };
 
-    zoom = d3Zoom().on('zoom', zoomed);
+    zoom = d3Zoom().scaleExtent([.5, 20]).translateExtent([[-1000, -1000], [10000,10000]]).on('zoom', zoomed);
     svg.call(zoom);
   }
 
   click2(d: Node): any {
-    console.log(d);
+    //console.log(d);
     //this.store.dispatch(new ActionBooksLikeOne(new Logo(d.id,d.label,d.img)))
     //this.dataService.click()
   }
@@ -90,7 +94,7 @@ export class D3Service {
   /** A method to bind a draggable behaviour to an svg element */
   applyDraggableBehaviour(element, node: Node, graph: ForceDirectedGraph) {
     const d3element = d3Select(element);
-    console.log('d3element');
+    //console.log('d3element');
     //console.log(d3element)
     //d3element.datum(node)
     //console.log(d3element.datum())

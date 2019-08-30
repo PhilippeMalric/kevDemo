@@ -36,8 +36,8 @@ export function logoReducer(
         console.log(newLogo);
 
         let state2 = logoAdapter.upsertOne(newLogo, state);
-        console.log("state2")
-        console.log(state2)
+        //console.log("state2")
+        //console.log(state2)
         return state2
       }
       else{
@@ -45,34 +45,51 @@ export function logoReducer(
       }
 
       case LogoActionTypes.SAVE:
-          console.log('LogoUpserted');
-          console.log(action.payload.logo);
+          //console.log('LogoUpserted');
+          //console.log(action.payload.logo);
           return logoAdapter.upsertOne(action.payload.logo, state);
 
     case LogoActionTypes.UPSERT_ONE:
-      console.log('LogoUpserted');
-      console.log(action.payload.logo);
+      //console.log('LogoUpserted');
+      //console.log(action.payload.logo);
       return logoAdapter.upsertOne(action.payload.logo, state);
 
     case LogoActionTypes.UPSERT_ONE_Local:
-      console.log('LogoUpserted');
-      console.log(action.payload.logo);
+      //console.log('LogoUpserted');
+      //console.log(action.payload.logo);
       let newState = logoAdapter.upsertOne(action.payload.logo, state);
-      console.log('newState');
-      console.log(newState);
+      //console.log('newState');
+      //console.log(newState);
       return newState
 
 
     case LogoActionTypes.UPSERT_ALL:
-      console.log(action.payload.logos)
+      //console.log(action.payload.logos)
       return logoAdapter.upsertMany(action.payload.logos, state);
 
     case LogoActionTypes.UPSERT_ALL2:
       return logoAdapter.upsertMany(action.payload.logos, state);
 
-      case LogoActionTypes.UpsertAllFromVote:
-          return logoAdapter.upsertMany(action.payload.logos, state);
+    case LogoActionTypes.UpsertAllFromVote:
+        return logoAdapter.upsertMany(action.payload.logos, state);
 
+    case LogoActionTypes.WIN:
+        console.log('CHANGE NIVEAU');
+        console.log(action.payload["niveau"]);
+        if(state){
+          let newLogo:Logo = JSON.parse(JSON.stringify(action.payload.logo))
+          newLogo.win =   newLogo.win + 1
+          console.log("newLogo win + 1");
+          console.log(newLogo);
+
+          let state2 = logoAdapter.upsertOne(newLogo, state);
+          //console.log("state2")
+          //console.log(state2)
+          return state2
+        }
+        else{
+          return state
+        }
 
     case LogoActionTypes.DELETE_ONE:
       return logoAdapter.removeOne(action.payload.id, state);

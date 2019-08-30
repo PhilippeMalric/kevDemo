@@ -47,11 +47,11 @@ export class LogosEffects {
         .doc(DICT_uID_FB)
         .valueChanges()
         .subscribe((values: any) => {
-          console.log('values');
-          console.log(values);
+          //console.log('values');
+          //console.log(values);
 
-          console.log('id1');
-          console.log(store.auth.uid);
+          //console.log('id1');
+          //console.log(store.auth.uid);
           if (store.auth.uid && store.auth.uid in values) {
             let id = values[store.auth.uid];
             const collection: AngularFirestoreCollection<LogoState> = this.afs.collection('logos');
@@ -62,16 +62,16 @@ export class LogosEffects {
 
             collection.doc(id).update(newStore);
           } else {
-            console.log('User not in index : ' + DICT_uID_FB);
-            console.log('Or not login');
+            //console.log('User not in index : ' + DICT_uID_FB);
+            //console.log('Or not login');
             const collection: AngularFirestoreCollection<LogoState> = this.afs.collection('logos');
-            console.log('collection');
+            //console.log('collection');
 
             let newStore = JSON.parse(JSON.stringify(store))
 
             newStore.examples.logos.entities[actions['payload']['logo']['id']] = actions['payload']['logo']
 
-            console.log(collection);
+            //console.log(collection);
             collection.doc(Logos_KEY).update(newStore);
           }
         });
@@ -80,20 +80,23 @@ export class LogosEffects {
 
   @Effect({ dispatch: false })
   UpsertAllLogos = this.actions$.pipe(
-    ofType(LogoActionTypes.UPSERT_ALL2),
+    ofType(
+      LogoActionTypes.UPSERT_ALL2,
+      LogoActionTypes.WIN
+      ),
     withLatestFrom(this.store),
 
     tap(([actions, store]) => {
-      console.log('store');
-      console.log(store);
+      //console.log('store');
+      //console.log(store);
 
       this.afs
         .collection('logos')
         .doc(DICT_uID_FB)
         .valueChanges()
         .subscribe((values: any) => {
-          console.log('values');
-          console.log(values);
+          //console.log('values');
+          //console.log(values);
           /*
           if (store.auth.uid in values) {
             let id = values[store.auth.uid];
@@ -104,12 +107,12 @@ export class LogosEffects {
           } else {
 
             */
-          console.log('store to firestore');
-          console.log(store);
+          //console.log('store to firestore');
+          //console.log(store);
 
           const collection: AngularFirestoreCollection<LogoState> = this.afs.collection('logos');
           collection.doc(Logos_KEY).update(store);
-          console.log('User not in index : ' + DICT_uID_FB);
+          //console.log('User not in index : ' + DICT_uID_FB);
           //}
         });
     })

@@ -107,13 +107,14 @@ export class GoogleAuthService {
 
   private async oAuthLogin(provider) {
     const credential: any = await this.afAuth.auth.signInWithPopup(provider);
-
+/*
     console.log('displayName');
     console.log(credential.user.displayName);
     console.log('credential.user.displayName');
     console.log(credential.user.uid);
     console.log('credential');
     console.log(credential);
+*/
     this.updateUserData({
       uid: credential.user.uid,
       email: credential.additionalUserInfo.profile.email,

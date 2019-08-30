@@ -17,7 +17,8 @@ import {
   ActionLogosLikeOne,
   ActionLogosUpsertAll,
   ActionLogosUpsertAll2,
-  ActionLogosUpsertOne
+  ActionLogosUpsertOne,
+  ActionLogosAddWin
 } from '@app/examples/crud/logos.actions';
 import { Observable } from 'rxjs';
 import { NodeService } from './node.service';
@@ -43,6 +44,8 @@ export class GraphComponent implements OnInit, AfterViewInit {
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   public _options: { width; height } = { width: 400, height: 400 };
 
+  nodesForHisto: Node[]
+
   height: string;
 
   x:number
@@ -53,6 +56,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
 
   scx: number;
   scy: number;
+  fin: boolean;
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -68,6 +72,9 @@ export class GraphComponent implements OnInit, AfterViewInit {
     private afs: AngularFirestore,
     private router: Router
   ) {
+    this.fin = false
+    this.nodesForHisto = []
+
     this.x = 0.5 * this.options.width
     this.y = 0
 
@@ -104,9 +111,9 @@ center(){
 
   }
   this.y  = this.nodes[max_i].y - (this.graph.options.height / 2)
-  this.x = max - (this.graph.options.width/2)
-  this.x2 = this.x + this.options.width
-  this.y2 = this.y + this.options.height
+  this.x = max - ((this.graph.options.width/2)-100)
+  this.x2 = this.options.width
+  this.y2 = this.options.height
   this.ref.markForCheck();
 
 }
@@ -115,8 +122,8 @@ center(){
     this.store.pipe(select(selectAllLogos)).subscribe((logos: any) => {
       this.height = '' + (logos.length * 100 + 100);
       this.ref.markForCheck();
-      console.log('logos!! from graph');
-      console.log(logos);
+      //console.log('logos!! from graph');
+      //console.log(logos);
       let tab = Object.keys(logos);
       let dict = logos;
       this.nodeService.node$.next(
@@ -129,7 +136,8 @@ center(){
               dict[k].niveauDaccord,
               dict[k].x,
               dict[k].y,
-              dict[k].avg
+              dict[k].avg,
+              dict[k].win
             )
         )
       );
@@ -162,8 +170,42 @@ center(){
     this.nodeService.node$.pipe().subscribe((nodes: Node[]) => {
       if (this.graph) {
         this.nodes = nodes;
+        this.nodesForHisto = JSON.parse(JSON.stringify(this.nodes))
 
-        console.log('graph exist');
+
+          for(let i in this.nodes){
+            if(1){
+            this.nodes[i].p = i
+            }
+          }
+        this.nodesForHisto.sort((node1,node2)=>
+        {
+          if(node1.x < node2.x){
+            return 1
+          }
+          if(node1.x > node2.x){
+            return -1
+          }
+          if(node1.win < node2.win){
+            return 1
+          }
+          if(node1.win > node2.win){
+            return -1
+          }
+          return 0
+        })
+
+        for (let i in this.nodesForHisto){
+          if(1){
+
+            let node = this.nodesForHisto[i]
+
+            node.pos = this.nodes[node.p];
+            node.y =  (Number(i) * 100 + Number(this.height) +50)
+          }
+        }
+
+       // console.log('graph exist');
         this.ref.markForCheck();
         //this.graph = this.d3Service.changeForceDirectedGraph(this.nodes)
         //this.nodes = this.graph.simulation.nodes
@@ -252,7 +294,8 @@ center(){
             node.commentaire,
             node.x,
             node.y,
-            node.avg
+            node.avg,
+            node.win
           );
         })
       })
@@ -267,9 +310,9 @@ center(){
   };
 
   start() {
-    let fin = false;
+    this.fin = false;
     let interval = setInterval(() => {
-      if (!fin) {
+      if (!this.fin) {
         this.store.dispatch(
           new ActionLogosUpsertAll2({
             logos: this.nodes.map((node: Node, i) => {
@@ -280,10 +323,11 @@ center(){
                 node.niveau,
                 '',
                 false,
-                "123",
+                node.texte,
                 this.nextStep(node),
                 node.y,
-                node.avg
+                node.avg,
+                node.win
               );
             })
           })
@@ -292,8 +336,48 @@ center(){
         let filtra = this.nodes.filter(node => {
           return node.x > 6200;
         });
+
+
+
         if (filtra.length > 0) {
-          fin = true;
+          this.nodes.sort((logo1:Node,logo2:Node)=>
+          {
+            if(logo1.x < logo2.x){
+                return -1
+              }
+            if(logo1.x > logo2.x){
+                return 1
+              }
+              return 0
+          })
+
+          for(let i in this.nodes){
+            if(1){
+              this.nodes[i].win +=Number(i)+1
+            }
+          }
+
+          let node = filtra[0]
+          this.fin = true;
+          this.store.dispatch(new ActionLogosAddWin(
+            {logo: new Logo(
+              node.id,
+              node.label,
+              node.img,
+              node.niveau,
+              '',
+              false,
+              node.texte,
+              this.nextStep(node),
+              node.y,
+              node.avg,
+              node.win
+            )}
+          ))
+          setTimeout(() => {
+            this.reset()
+          }, 1000);
+
         }
       } else {
         clearInterval(interval);
@@ -304,7 +388,7 @@ center(){
   reset() {
     this.x = 0.5 * this.options.width
     this.y = 0
-
+    this.fin = false
     this.x2 = this.options.width
     this.y2 = this.options.height * 2
     this.store.dispatch(
@@ -325,7 +409,8 @@ center(){
             txt,
             200,
             i * 100 + 100,
-            node.avg
+            node.avg,
+            node.win
           );
         })
       })

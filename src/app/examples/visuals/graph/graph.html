@@ -12,7 +12,12 @@
           [draggableNode]="node" [draggableInGraph]="graph"
           >
       </g>
+      <g [nodeVisual2]="node" *ngFor="let node of nodesForHisto"
+          [draggableNode]="node" [draggableInGraph]="graph"
+          >
+      </g>
     </g>
+
   </svg>
 </div>
 
@@ -36,14 +41,11 @@
 -->
 <div class="center">
 
-  <button type="button" mat-raised-button color="accent"
+  <button *ngIf="!fin" type="button" mat-fab color="primary"
   [ngClass]="routeAnimationsElements" (click)="start()">
   Départ!
 </button>
-<button type="button" mat-raised-button color="accent"
-  [ngClass]="routeAnimationsElements" (click)="reset()">
-  Reset
-</button>
+<!--
 
 <button type="button" mat-raised-button color="accent"
   [ngClass]="routeAnimationsElements" (click)="resetDb()">
@@ -54,7 +56,7 @@
   [ngClass]="routeAnimationsElements" (click)="center()">
   Center
 </button>
-
+-->
 </div>
 
 

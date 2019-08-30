@@ -12,7 +12,7 @@ export class Logo {
   x?: number;
   y?: number;
   avg?: number;
-
+  win?: number;
   constructor(
     id: string,
     texte: string,
@@ -23,7 +23,8 @@ export class Logo {
     commentaire,
     x,
     y,
-    avg = 0
+    avg = 0,
+    win = 0
   ) {
     this.id = id;
     this.texte = texte;
@@ -35,6 +36,7 @@ export class Logo {
     this.x = x;
     this.y = y;
     this.avg = avg;
+    this.win = win;
   }
 }
 
