@@ -61,7 +61,7 @@ export class ActionLogosSaveONE implements Action {
 
 export class ActionLogosAddWin implements Action {
   readonly type = LogoActionTypes.WIN;
-  constructor(readonly payload: { logo: Logo }) {}
+  constructor(readonly payload: { logos: Logo[] }) {}
 }
 
 export type LogoActions =

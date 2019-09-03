@@ -357,26 +357,30 @@ center(){
             }
           }
 
-          let node = filtra[0]
           this.fin = true;
           this.store.dispatch(new ActionLogosAddWin(
-            {logo: new Logo(
-              node.id,
-              node.label,
-              node.img,
-              node.niveau,
-              '',
-              false,
-              node.texte,
-              this.nextStep(node),
-              node.y,
-              node.avg,
-              node.win
-            )}
+            {logos:
+            this.nodes.map((node)=>{
+              return new Logo(
+                node.id,
+                node.label,
+                node.img,
+                node.niveau,
+                '',
+                false,
+                node.texte,
+                this.nextStep(node),
+                node.y,
+                node.avg,
+                node.win
+              )
+
+            })
+            }
           ))
           setTimeout(() => {
             this.reset()
-          }, 1000);
+          }, 10000);
 
         }
       } else {

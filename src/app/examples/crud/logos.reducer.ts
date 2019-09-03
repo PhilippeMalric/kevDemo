@@ -77,12 +77,11 @@ export function logoReducer(
         console.log('CHANGE NIVEAU');
         console.log(action.payload["niveau"]);
         if(state){
-          let newLogo:Logo = JSON.parse(JSON.stringify(action.payload.logo))
-          newLogo.win =   newLogo.win + 1
+          let newLogos:Logo[] = JSON.parse(JSON.stringify(action.payload.logos))
           console.log("newLogo win + 1");
-          console.log(newLogo);
+          console.log(newLogos);
 
-          let state2 = logoAdapter.upsertOne(newLogo, state);
+          let state2 = logoAdapter.upsertMany(newLogos, state);
           //console.log("state2")
           //console.log(state2)
           return state2
