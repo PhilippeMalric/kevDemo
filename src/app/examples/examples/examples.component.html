@@ -1,3 +1,5 @@
+<!--
+
 <nav mat-tab-nav-bar class="d-none d-sm-flex">
   <a mat-tab-link
      *ngFor="let e of examples"
@@ -11,7 +13,8 @@
 <nav class="nav-responsive d-sm-none d-flex justify-content-center">
     <mat-select placeholder="Liste de lecture" value="Liste de lecture">
       <mat-option *ngFor="let e of examples"
-        [value]="e"
+      
+      [value]="e"
         [routerLink]="e.link">
           {{e.label}}
       </mat-option>
@@ -22,3 +25,15 @@
 <div [@routeAnimations]="o.isActivated && o.activatedRoute.routeConfig.path">
   <router-outlet #o="outlet"></router-outlet>
 </div>
+
+-->
+<mat-card>
+<mat-card-title>
+  <h1>Hello Keven</h1>
+</mat-card-title>
+<mat-card-content *ngFor="let e of elements">
+  {{e}}
+</mat-card-content >
+</mat-card>
+
+

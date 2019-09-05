@@ -7,13 +7,13 @@ export const environment = {
   test: true,
   i18nPrefix: '',
   firebaseConfig: {
-    apiKey: 'AIzaSyAUGdBOm2gv2Ghw9-zDuhvzNbBa5MSt6_0',
-    authDomain: 'logorun-123.firebaseapp.com',
-    databaseURL: 'https://logorun-123.firebaseio.com',
-    projectId: 'logorun-123',
+    apiKey: 'AIzaSyBaWr0R15WxO-6-o55juglU0DWNVQvvTPY',
+    authDomain: 'kevdemo-111.firebaseapp.com',
+    databaseURL: 'https://kevdemo-111.firebaseio.com',
+    projectId: 'kevdemo-111',
     storageBucket: '',
-    messagingSenderId: '96540546073',
-    appId: '1:96540546073:web:d4c50fcc0694b7cf'
+    messagingSenderId: '214483439746',
+    appId: '1:214483439746:web:f2069d818411bd4b46649b'
   },
   versions: {
     app: packageJson.version,

@@ -36,15 +36,13 @@ interface State extends BaseSettingsState, BaseExamplesState {}
 export class ExamplesComponent implements OnInit {
   isAuthenticated$: Observable<boolean>;
 
-
   entitiesLogo$: Observable<any[]>;
   subscription: Subscription;
   subscription2: Subscription;
 
-  examples = [
-    { link: 'crud', label: 'Liste des Logos', auth: true },
-    { link: 'gears', label: 'Logo Battle', auth: true }
-  ];
+  examples = [{ link: 'crud', label: 'Liste des Logos', auth: true }];
+
+  elements = ['La vie est belle', 'Keven est un homme inteligent', 'etc.'];
 
   key: string = Logos_KEY;
   votes$: Observable<any>;
@@ -57,6 +55,7 @@ export class ExamplesComponent implements OnInit {
     if (this.subscription2) {
       this.subscription2.unsubscribe();
     }
+    /*
     this.votes$ = this.dataS.fireStoreVotes();
     this.subscription2 = this.votes$.subscribe((votes: any) => {
       //console.log("fireStoreVotes")
@@ -65,6 +64,7 @@ export class ExamplesComponent implements OnInit {
         new ActionVoteUpsertAll({ votes: votes })
       );
     });
+    */
     this.subscription = null;
     this.changeEntityLogo();
     /*
@@ -82,17 +82,22 @@ export class ExamplesComponent implements OnInit {
     */
   }
 
+  click() {
+    console.log('test1');
+  }
+
   changeEntityLogo() {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-
+    /*
     this.entitiesLogo$ = this.dataS.fireStoreLogoObs(this.key);
     this.subscription = this.entitiesLogo$.subscribe((logos: Logo[]) => {
       //console.log('new fireStoreObservable logos');
       //console.log(logos);
       this.store.dispatch(new ActionLogosUpsertAll({ logos: logos }));
     });
+    */
     this.changeDetectorRef.markForCheck();
   }
 
