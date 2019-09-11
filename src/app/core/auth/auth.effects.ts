@@ -59,8 +59,8 @@ export class AuthEffects {
               this.dataS.logoKey.next(id);
             } else {
               this.store.pipe(take(1)).subscribe(store => {
-                //console.log('store');
-                //console.log(store);
+                console.log('store');
+                console.log(store);
                 let newStore = JSON.parse(JSON.stringify(store));
                 newStore.examples.logos = { ids: [], entities: {} };
                 let ref = this.afs

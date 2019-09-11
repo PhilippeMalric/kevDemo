@@ -19,7 +19,7 @@ const routes: Routes = [
     data: { title: 'anms.menu.settings' }
   },
   {
-    path: 'logoBattle',
+    path: 'app',
     loadChildren: 'app/examples/examples.module#ExamplesModule'
   },
   {

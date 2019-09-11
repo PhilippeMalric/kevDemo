@@ -41,4 +41,5 @@ export const selectRouterState = createFeatureSelector<
 export interface AppState {
   auth: AuthState;
   router: RouterReducerState<RouterStateUrl>;
+  
 }

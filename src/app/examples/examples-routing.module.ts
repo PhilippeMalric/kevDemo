@@ -7,6 +7,7 @@ import { ExamplesComponent } from './examples/examples.component';
 import { AuthenticatedComponent } from './authenticated/authenticated.component';
 import { CrudComponent } from './crud/components/crud.component';
 import { GearsComponent } from './gears/gears.component';
+import { UsersInfoComponent } from './users-info/users-info.component';
 
 const routes: Routes = [
   {
@@ -32,7 +33,13 @@ const routes: Routes = [
         path: 'gears',
         component: GearsComponent,
         data: { title: 'Graph' }
-      }
+      },
+      {
+        path: 'users-info',
+        component: UsersInfoComponent,
+        data: { title: 'Users' }
+      },
+      
     ]
   }
 ];

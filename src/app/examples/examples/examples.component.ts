@@ -24,6 +24,7 @@ import {
   ActionJeuUpsertAllCartesFromFirebase
 } from '../authenticated/jeu.actions';
 import { ActionVoteUpsertAll } from '../crud/vote.actions';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 interface State extends BaseSettingsState, BaseExamplesState {}
 
@@ -40,7 +41,11 @@ export class ExamplesComponent implements OnInit {
   subscription: Subscription;
   subscription2: Subscription;
 
-  examples = [{ link: 'crud', label: 'Liste des Logos', auth: true }];
+  examples = [
+    { link: 'crud', label: 'Liste des items', auth: false },
+    { link: 'users-info', label: 'Liste des users', auth: false }
+    
+];
 
   elements = ['La vie est belle', 'Keven est un homme inteligent', 'etc.'];
 
@@ -50,8 +55,18 @@ export class ExamplesComponent implements OnInit {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private store: Store<State>,
-    private dataS: DataService
+    private dataS: DataService,
+    private db: AngularFireDatabase
   ) {
+
+    const path = 'users/';
+  
+    this.db.object(path).valueChanges().subscribe((data)=>{
+
+      console.log("data!!!")
+      console.log(data)
+    });
+
     if (this.subscription2) {
       this.subscription2.unsubscribe();
     }

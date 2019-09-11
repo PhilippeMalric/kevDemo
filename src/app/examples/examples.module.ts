@@ -26,6 +26,7 @@ import { D3_DIRECTIVES, D3Service } from './d3';
 import { GraphComponent } from './visuals/graph/graph.component';
 import { DataService } from './gears/data.service';
 import { VotesEffects } from './crud/vote.effects';
+import { UsersInfoComponent } from './users-info/users-info.component';
 @NgModule({
   imports: [
     SharedModule,
@@ -53,7 +54,8 @@ import { VotesEffects } from './crud/vote.effects';
     ExamplesComponent,
     CrudComponent,
     AuthenticatedComponent,
-    GearsComponent
+    GearsComponent,
+    UsersInfoComponent
   ],
   providers: [JeuServiceService]
 })

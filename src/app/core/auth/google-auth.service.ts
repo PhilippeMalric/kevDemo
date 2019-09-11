@@ -84,17 +84,22 @@ export class GoogleAuthService {
     {
 
       const uid = this.afAuth.auth.currentUser.uid;
+      let dp = this.afAuth.auth.currentUser.displayName
+      if(!dp || dp == ""){
+        dp = this.afAuth.auth.currentUser.email
+      }
       const status = 'offline';
-      this.setStatus(uid, status);
+      this.setStatus(uid, status,dp);
       this.authState = null;
       return this.afAuth.auth.signOut().then(() => this.router.navigate(['/logoBattle']));
     }
   }
 
-  setStatus(uid: string, status: string) {
+  setStatus(uid: string, status: string,dp:string) {
     const path = 'users/' + uid;
     const data = {
-      status
+      status,
+
     };
     this.db.object(path).update(data);
   }
@@ -146,9 +151,14 @@ export class GoogleAuthService {
     return userRef.set(data, { merge: true });
   }
   setUserData(email: string, displayName: string, status: string, uid) {
+    let dp = displayName
+      if(!dp || dp == ""){
+        dp = email
+      }
     const path = `users/${uid}`;
     const data = {
-      status
+      status,
+      dp
     };
     this.db.object(path).update(data);
   }

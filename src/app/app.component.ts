@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
   languages = ['en', 'de', 'sk', 'fr', 'es', 'pt-br', 'zh-cn', 'he'];
   navigation = [
     { link: 'about', label: 'À propos' },
-    { link: 'logoBattle', label: 'Logo Battle' }
+    { link: 'app', label: 'Application' }
   ];
   navigationSideMenu = [
     ...this.navigation,
