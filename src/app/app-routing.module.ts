@@ -6,11 +6,12 @@ import { SignUpComponent } from './core/auth/sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './core/auth/forgot-password/forgot-password.component';
 import { SignInComponent } from './core/auth/sign-in/sign-in.component';
 import { VerifyEmailComponent } from './core/auth/verify-email/verify-email.component';
+import { AuthGuardService } from './core';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'logoBattle',
+    redirectTo: 'about',
     pathMatch: 'full'
   },
   {
@@ -20,7 +21,8 @@ const routes: Routes = [
   },
   {
     path: 'app',
-    loadChildren: 'app/examples/examples.module#ExamplesModule'
+    loadChildren: 'app/examples/examples.module#ExamplesModule',
+    canActivate: [AuthGuardService],
   },
   {
     path: 'emailLogin',

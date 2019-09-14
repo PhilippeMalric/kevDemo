@@ -27,8 +27,11 @@ import { GraphComponent } from './visuals/graph/graph.component';
 import { DataService } from './gears/data.service';
 import { VotesEffects } from './crud/vote.effects';
 import { UsersInfoComponent } from './users-info/users-info.component';
+import * as fromUsers from './users-info/users.reducer';
+import { UsersEffects } from './users-info/users.effects';
 @NgModule({
   imports: [
+
     SharedModule,
     ExamplesRoutingModule,
     StoreModule.forFeature(FEATURE_NAME, reducers),
@@ -44,7 +47,8 @@ import { UsersInfoComponent } from './users-info/users-info.component';
       ExamplesEffects,
       JeuxEffects,
       LogosEffects,
-      VotesEffects
+      VotesEffects,
+      UsersEffects
     ])
   ],
   declarations: [

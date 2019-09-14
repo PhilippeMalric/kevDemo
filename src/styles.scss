@@ -8,6 +8,7 @@
 
 @include mat-core();
 
+@import 'themes/space-theme.scss';
 @import 'themes/new-theme.scss';
 @import 'themes/default-theme.scss';
 @import 'themes/light-theme.scss';
@@ -27,6 +28,12 @@
   @include anms-big-input-component-theme($theme);
 
   @include anms-examples-component-theme($theme);
+}
+
+
+.space-theme {
+  @include angular-material-theme($anms-space-theme);
+  @include custom-components-theme($anms-space-theme);
 }
 
 .new-theme {

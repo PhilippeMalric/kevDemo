@@ -73,7 +73,7 @@ modifyCartesToFirebase(id,carte:Votes){
     const collection: AngularFirestoreCollection<Vote> = this.af.collection(
       'votes'
     );
-    collection.doc('rUsx9vFEVq4il8FWX1w0').update(votes);
+    collection.doc('pfZRTpwzPPCPCvgmLGTY').update(votes);
 
     //collection.add(carte)
 

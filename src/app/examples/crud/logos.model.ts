@@ -1,5 +1,4 @@
 import { EntityState } from '@ngrx/entity';
-import { User } from '@app/core/auth/user.model';
 
 export class Logo {
   id: string;

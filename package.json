@@ -61,6 +61,7 @@
     "@angular/compiler": "^7.0.3",
     "@angular/core": "^7.0.3",
     "@angular/fire": "^5.2.1",
+    "@angular/flex-layout": "^8.0.0-beta.27",
     "@angular/forms": "^7.0.3",
     "@angular/http": "^7.0.3",
     "@angular/material": "^7.0.2",

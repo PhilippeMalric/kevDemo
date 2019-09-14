@@ -25,6 +25,9 @@ import {
 } from '../authenticated/jeu.actions';
 import { ActionVoteUpsertAll } from '../crud/vote.actions';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { Action } from 'rxjs/internal/scheduler/Action';
+import { SaveUsers } from '../users-info/users.actions';
+import { User } from '../users-info/users.model';
 
 interface State extends BaseSettingsState, BaseExamplesState {}
 
@@ -44,7 +47,7 @@ export class ExamplesComponent implements OnInit {
   examples = [
     { link: 'crud', label: 'Liste des items', auth: false },
     { link: 'users-info', label: 'Liste des users', auth: false }
-    
+
 ];
 
   elements = ['La vie est belle', 'Keven est un homme inteligent', 'etc.'];
@@ -60,17 +63,18 @@ export class ExamplesComponent implements OnInit {
   ) {
 
     const path = 'users/';
-  
+
     this.db.object(path).valueChanges().subscribe((data)=>{
 
       console.log("data!!!")
       console.log(data)
+      let users = Object.keys(data).map((k)=>new User(k,data[k].status,"https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1024px-User_icon_2.svg.png",data[k].dp))
+      this.store.dispatch(new SaveUsers({users:users}))
     });
-
     if (this.subscription2) {
       this.subscription2.unsubscribe();
     }
-    /*
+
     this.votes$ = this.dataS.fireStoreVotes();
     this.subscription2 = this.votes$.subscribe((votes: any) => {
       //console.log("fireStoreVotes")
@@ -79,10 +83,10 @@ export class ExamplesComponent implements OnInit {
         new ActionVoteUpsertAll({ votes: votes })
       );
     });
-    */
+
     this.subscription = null;
     this.changeEntityLogo();
-    /*
+
     const inter1 = setInterval(() => {
       if (dataS.logoKey) {
         dataS.logoKey.subscribe(key => {
@@ -94,7 +98,7 @@ export class ExamplesComponent implements OnInit {
         clearInterval(inter1);
       }
     }, 1000);
-    */
+
   }
 
   click() {

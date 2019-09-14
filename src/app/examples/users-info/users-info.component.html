@@ -1,3 +1,20 @@
-<p>
-  users-info works!
-</p>
+<div  style="padding: 5px;flex-wrap: wrap;flex-direction: row;display: flex;">
+  <div *ngFor="let card of cardListOnline$|async" >
+  <mat-card class="online">
+    <img mat-card-image [src]="card.url_img" />
+    <mat-card-title> {{ card.name }} </mat-card-title>
+    <mat-card-content> {{ card.texte }} </mat-card-content>
+    <mat-card-footer class="center">
+      <button fxFlex mat-flat-button color="primary" >Chat</button>
+    </mat-card-footer>
+  </mat-card>
+  </div>
+</div>
+<div  style="padding: 5px;flex-wrap: wrap;flex-direction: row;display: flex;">
+  <div *ngFor="let card of cardListOffline$|async" >
+  <mat-card class="offline">
+    <img mat-card-image [src]="card.url_img" />
+    <mat-card-title> {{ card.name }} </mat-card-title>
+  </mat-card>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 <div class="container" rtl>
   <h1 *ngIf="authName$ | async">{{authName$ | async}}</h1>
-  <h2>Liste des logos!</h2>
-  <h3 *ngIf="(myLogos$|async)?.length == 0">Veuillez patientez (quelques secondes (10 secondes maximum!))</h3>
+  <h2>Liste des oeuvres!</h2>
+  <h3 *ngIf="(myLogos$|async)?.length == 0">Veuillez ajoutez des oeuvres d'art</h3>
   <div class="row">
     <div class="col-md-6">
 

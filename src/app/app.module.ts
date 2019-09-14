@@ -29,7 +29,6 @@ import { DataService } from './examples/gears/data.service';
     // features
     StaticModule,
     SettingsModule,
-
     // app
     AppRoutingModule
   ],

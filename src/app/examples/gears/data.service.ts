@@ -32,7 +32,7 @@ export class DataService {
   fireStoreVotes() {
     return this.afs
       .collection('votes')
-      .doc('rUsx9vFEVq4il8FWX1w0')
+      .doc('pfZRTpwzPPCPCvgmLGTY')
       .valueChanges()
       .pipe(
         tap((data: any) => {

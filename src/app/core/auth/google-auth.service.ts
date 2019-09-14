@@ -10,6 +10,8 @@ import { auth } from 'firebase';
 import { Store } from '@ngrx/store';
 import { AuthState } from './auth.models';
 import { Authenticated,GetUser } from './auth.actions';
+import * as firebase from 'firebase/app';
+
 
 @Injectable({
   providedIn: 'root'
@@ -39,9 +41,30 @@ export class GoogleAuthService {
   SignIn(email, password) {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then((result) => {
+        let dp = result.user.displayName
+        if(!dp || dp == ""){
+          dp = email
+        }
+        this.updateOnDisconnect(result.user.uid,dp)
 
+        this.updateOnDisconnect(result.user.uid,dp)
+        this.updateUserData({
+          uid: result.user.uid,
+          email: email,
+          displayName: dp,
+          photoURL: ''
+        });
+        const status = 'online';
+        this.setUserData(
+          email,
+          dp,
+          status,
+          result.user.uid
+        );
+        this.authState = result;
+        this.router.navigate(['app']);
         this.store.dispatch(new Authenticated(new User(result.user.uid,result.user.displayName,email)))
-        this.router.navigate(['logoBattle']);
+        //this.router.navigate(['logoBattle']);
       }).catch((error) => {
         window.alert(error.message)
       })
@@ -120,6 +143,11 @@ export class GoogleAuthService {
     console.log('credential');
     console.log(credential);
 */
+    let dp = credential.user.displayName
+    if(!dp || dp == ""){
+      dp = credential.additionalUserInfo.profile.email
+    }
+    this.updateOnDisconnect(credential.user.uid,dp)
     this.updateUserData({
       uid: credential.user.uid,
       email: credential.additionalUserInfo.profile.email,
@@ -135,7 +163,7 @@ export class GoogleAuthService {
     );
     this.authState = credential;
     this.store.dispatch(new Authenticated(new User(credential.user.uid,credential.user.displayName,credential.additionalUserInfo.profile.email)))
-    this.router.navigate(['logoBattle']);
+    this.router.navigate(['app']);
   }
 
   private updateUserData({ uid, email, displayName, photoURL }: User) {
@@ -162,4 +190,19 @@ export class GoogleAuthService {
     };
     this.db.object(path).update(data);
   }
+
+
+  private updateOnDisconnect(uid,dp) {
+
+    const status = 'offline';
+    firebase.database().ref().child(`users/${uid}`)
+            .onDisconnect()
+            .update( {
+                        status,
+                        dp
+                      })
+  }
+
+
+
 }
