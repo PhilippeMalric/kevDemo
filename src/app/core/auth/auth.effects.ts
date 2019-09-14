@@ -56,7 +56,8 @@ export class AuthEffects {
             //console.log(values);
             if (authData.uid in values) {
               let id = values[authData.uid];
-              this.dataS.logoKey.next(id);
+              //Logos_KEY
+              //this.dataS.logoKey.next(id);
             } else {
               this.store.pipe(take(1)).subscribe(store => {
                 console.log('store');
@@ -75,7 +76,8 @@ export class AuthEffects {
                       .doc(DICT_uID_FB)
                       .update(newObj)
                       .then(() => {
-                        this.dataS.logoKey.next(id);
+                        console.log(id)
+                        //this.dataS.logoKey.next(id);
                       });
                   });
               });

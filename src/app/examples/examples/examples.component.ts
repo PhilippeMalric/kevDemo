@@ -87,6 +87,8 @@ export class ExamplesComponent implements OnInit {
     this.subscription = null;
     this.changeEntityLogo();
 
+    //Pour avoir sa propre list d'items
+    /*
     const inter1 = setInterval(() => {
       if (dataS.logoKey) {
         dataS.logoKey.subscribe(key => {
@@ -98,7 +100,7 @@ export class ExamplesComponent implements OnInit {
         clearInterval(inter1);
       }
     }, 1000);
-
+    */
   }
 
   click() {
@@ -109,14 +111,14 @@ export class ExamplesComponent implements OnInit {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-    /*
+
     this.entitiesLogo$ = this.dataS.fireStoreLogoObs(this.key);
     this.subscription = this.entitiesLogo$.subscribe((logos: Logo[]) => {
       //console.log('new fireStoreObservable logos');
       //console.log(logos);
       this.store.dispatch(new ActionLogosUpsertAll({ logos: logos }));
     });
-    */
+
     this.changeDetectorRef.markForCheck();
   }
 

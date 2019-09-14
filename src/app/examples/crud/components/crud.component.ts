@@ -170,7 +170,7 @@ export class CrudComponent {
 
     this.selectedLogo = logo.id;
 
-    this.router.navigate(['logoBattle/crud', this.selectedLogo]);
+    this.router.navigate(['app/crud', this.selectedLogo]);
   }
 
 
@@ -246,7 +246,8 @@ export class CrudComponent {
             .doc(DICT_uID_FB)
             .update(newObj)
             .then(() => {
-              this.dataS.logoKey.next(id);
+              console.log(id)
+              //this.dataS.logoKey.next(id);
             });
         });
     });

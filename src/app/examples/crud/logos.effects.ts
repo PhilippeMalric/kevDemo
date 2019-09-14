@@ -59,8 +59,8 @@ export class LogosEffects {
             let newStore = JSON.parse(JSON.stringify(store))
 
             newStore.examples.logos.entities[actions['payload']['logo']['id']] = actions['payload']['logo']
-
-            collection.doc(id).update(newStore);
+            collection.doc(Logos_KEY).update(newStore);
+            //collection.doc(id).update(newStore);
           } else {
             //console.log('User not in index : ' + DICT_uID_FB);
             //console.log('Or not login');

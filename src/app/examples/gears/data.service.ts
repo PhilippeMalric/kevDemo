@@ -109,20 +109,8 @@ convertVoteCommentaire(obj,logo:Logo,auth,authEmail){
         console.log("obj")
         console.log(obj)
         */
-/*
-        obj[0].examples.logos.ids.map((id)=>{
 
-          if(obj[0].examples.logos.entities[id] && obj[1].examples.logos.entities[id]){
-            if(obj[0].examples.logos.entities[id].x < obj[1].examples.logos.ids){
-              newLogo.entities[id].x = obj[0].examples.logos.entities[id].x
-             }
-             else{
-              newLogo.entities[id].x = obj[1].examples.logos.entities[id].x
-             }
-          }
 
-        })
-*/
 
 
 
