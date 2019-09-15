@@ -32,7 +32,8 @@ export class LogosEffects {
   @Effect({ dispatch: false })
   persistLogos = this.actions$.pipe(
     ofType(
-      LogoActionTypes.SAVE
+      LogoActionTypes.SAVE,
+
     ),
     withLatestFrom(this.store),
 
@@ -45,7 +46,7 @@ export class LogosEffects {
       this.afs
         .collection('logos')
         .doc(DICT_uID_FB)
-        .valueChanges()
+        .valueChanges().pipe(take(1))
         .subscribe((values: any) => {
           //console.log('values');
           //console.log(values);
@@ -81,12 +82,11 @@ export class LogosEffects {
   @Effect({ dispatch: false })
   UpsertAllLogos = this.actions$.pipe(
     ofType(
-      LogoActionTypes.UPSERT_ALL2,
-      LogoActionTypes.WIN
+      LogoActionTypes.DELETE_ONE,
       ),
-    withLatestFrom(this.store),
+      withLatestFrom(this.store),
 
-    tap(([actions, store]) => {
+      tap(([actions, store]) => {
       //console.log('store');
       //console.log(store);
 
@@ -107,11 +107,11 @@ export class LogosEffects {
           } else {
 
             */
-          //console.log('store to firestore');
-          //console.log(store);
-
+          console.log('store to firestore');
+          console.log(store);
+          let newStore = JSON.parse(JSON.stringify(store))
           const collection: AngularFirestoreCollection<LogoState> = this.afs.collection('logos');
-          collection.doc(Logos_KEY).update(store);
+          collection.doc(Logos_KEY).update(newStore);
           //console.log('User not in index : ' + DICT_uID_FB);
           //}
         });

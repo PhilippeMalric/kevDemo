@@ -114,7 +114,7 @@ export class GoogleAuthService {
       const status = 'offline';
       this.setStatus(uid, status,dp);
       this.authState = null;
-      return this.afAuth.auth.signOut().then(() => this.router.navigate(['/logoBattle']));
+      return this.afAuth.auth.signOut().then(() => this.router.navigate(['/app']));
     }
   }
 

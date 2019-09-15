@@ -4,9 +4,9 @@
 
     <mat-sidenav #sidenav mode="push">
       <div class="branding"><img [src]="logo" />
-        <span data-testid="title">Ensemble nous viverons</span></div>
+        <span data-testid="title">Exprimez-vous!</span></div>
       <mat-nav-list>
-        <a mat-list-item *ngFor="let item of navigationSideMenu" (click)="sidenav.close()" [routerLink]="[item.link]"
+        <a mat-list-item *ngFor="let item of navigation" (click)="sidenav.close()" [routerLink]="[item.link]"
           routerLinkActive="active">
           {{item.label}}
         </a>
@@ -19,12 +19,10 @@
         <mat-toolbar color="primary">
           <button mat-icon-button class="d-md-none" (click)="sidenav.open()">
             <fa-icon icon="bars"></fa-icon>
-
           </button>
-
-          <span routerLink="" class="branding spacer center d-inline d-sm-none">
+          <span routerLink="app" matRipple class="branding spacer center d-inline d-sm-none">
             <img [src]="logo" /></span>
-          <span routerLink="" class="branding spacer center d-none d-sm-inline d-md-none"><img [src]="logo" />La galerie interactive</span>
+          <span routerLink="" class="branding spacer center d-none d-sm-inline d-md-none"><img [src]="logo" />Remettez-vous en question!</span>
           <span routerLink="" class="branding spacer d-none d-md-inline"><img [src]="logo" />Votez, commentez et remettez-vous en question!</span>
 
           <span class="d-none d-md-inline">

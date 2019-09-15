@@ -1,6 +1,6 @@
 <div  style="padding: 5px;flex-wrap: wrap;flex-direction: row;display: flex;">
   <div *ngFor="let card of cardListOnline$|async" >
-  <mat-card class="online">
+  <mat-card class="online marginated">
     <img mat-card-image [src]="card.url_img" />
     <mat-card-title> {{ card.name }} </mat-card-title>
     <mat-card-content> {{ card.texte }} </mat-card-content>
@@ -12,7 +12,7 @@
 </div>
 <div  style="padding: 5px;flex-wrap: wrap;flex-direction: row;display: flex;">
   <div *ngFor="let card of cardListOffline$|async" >
-  <mat-card class="offline">
+  <mat-card class="offline marginated" >
     <img mat-card-image [src]="card.url_img" />
     <mat-card-title> {{ card.name }} </mat-card-title>
   </mat-card>

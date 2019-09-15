@@ -222,7 +222,7 @@ export class CrudComponent {
 
   deselect() {
     this.isEditing = false;
-    this.router.navigate(['logoBattle/crud']);
+    this.router.navigate(['app/crud']);
   }
 
   edit(logo: Logo) {
@@ -268,7 +268,7 @@ export class CrudComponent {
   delete(logo: Logo) {
     this.store.dispatch(new ActionLogosDeleteOne({ id: logo.id }));
     this.isEditing = false;
-    this.router.navigate(['logoBattle/crud']);
+    this.router.navigate(['app/crud']);
   }
 
   save() {
