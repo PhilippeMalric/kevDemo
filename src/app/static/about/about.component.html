@@ -2,7 +2,8 @@
 <div class="container">
     <div class="row">
       <div class="col-md-12" >
-        <h2  [ngClass]="routeAnimationsElements" class="main-heading">Bienvenue, identifiez-vous svp.</h2>
+        <h2  *ngIf="!(authName$ | async)" [ngClass]="routeAnimationsElements" class="main-heading">Bienvenue, identifiez-vous svp.</h2>
+        <h2 *ngIf="authName$ | async"  [ngClass]="routeAnimationsElements">Bienvenue, {{authName$ | async}}</h2>
       </div>
     </div>
     <img class="intro" src="assets/intro.jpg"/>

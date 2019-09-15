@@ -22,3 +22,8 @@ export const selectEmail = createSelector(
   selectAuthState,
   (state: AuthState) => state.email
 );
+
+export const selectDisplayName = createSelector(
+  selectAuthState,
+  (state: AuthState) => state.displayName
+);

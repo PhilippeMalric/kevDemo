@@ -18,6 +18,8 @@ export class UsersInfoComponent implements OnInit {
   cardListOffline$: Observable<User[]>
   constructor( private store: Store<State>) {
 
+
+
     this.cardListOnline$ =  this.store.pipe(select(selectAllUsers),
                             map((users:User[])=>{
                               return users.filter((user:User)=>{
