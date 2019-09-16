@@ -1,7 +1,7 @@
 <div class="container" rtl>
-  <h1 *ngIf="authName$ | async">{{authName$ | async}}</h1>
-  <h2>Liste des oeuvres!</h2>
-  <h3 *ngIf="(myLogos$|async)?.length == 0">Veuillez ajoutez des oeuvres d'art</h3>
+  <h3 *ngIf="authName$ | async">Compte du couriel : {{authName$ | async}}</h3>
+  <h4 *ngIf="(myLogos$|async)?.length != 0">Cliquez sur l'image pour selectionner l'élément</h4>
+  <h4 *ngIf="(myLogos$|async)?.length == 0">Veuillez ajoutez des éléments</h4>
   <div class="row">
     <div class="col-md-6">
 
@@ -147,11 +147,14 @@
       <ng-container *ngIf="!isEditing">
         <div [ngClass]="routeAnimationsElements" *ngIf="selectedLogo$ | async as selectedLogo; else noselectedLogoTmpl">
           <h3>{{ selectedLogo.texte }}</h3>
-
+          <mat-card *ngFor="let vote of votes">
+            <mat-card-title>{{vote.nom}}</mat-card-title>
+            <mat-card-content>{{vote.commentaire}}</mat-card-content>
+          </mat-card>
         </div>
 
         <ng-template #noselectedLogoTmpl>
-          <h4>Il n'y a pas de document sélectionné.</h4>
+          <h4>Il n'y a pas d'élément sélectionné.</h4>
         </ng-template>
       </ng-container>
 

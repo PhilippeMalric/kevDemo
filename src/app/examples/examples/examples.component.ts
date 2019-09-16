@@ -77,8 +77,8 @@ export class ExamplesComponent implements OnInit {
 
     this.votes$ = this.dataS.fireStoreVotes();
     this.subscription2 = this.votes$.subscribe((votes: any) => {
-      //console.log("fireStoreVotes")
-      //console.log(votes)
+      console.log("fireStoreVotes")
+      console.log(votes)
       this.store.dispatch(
         new ActionVoteUpsertAll({ votes: votes })
       );

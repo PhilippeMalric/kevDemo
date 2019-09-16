@@ -16,8 +16,8 @@ import {
 } from 'angularfire2/firestore';
 import { Router } from '@angular/router';
 
-export const Logos_KEY = 'oT2AHOO2VvPglzyMliB9';
-export const DICT_uID_FB = 'txRfTmjwLRSWkFndXcVN';
+export const Logos_KEY = '7CbwL8S27sEhVzM2ZIGw';
+export const DICT_uID_FB = 'l69Lh0zQOfsY1Sh8fLbx';
 
 @Injectable()
 export class LogosEffects {

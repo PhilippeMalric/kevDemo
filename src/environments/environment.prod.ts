@@ -7,13 +7,13 @@ export const environment = {
   test: false,
   i18nPrefix: '',
   firebaseConfig: {
-    apiKey: 'AIzaSyBaWr0R15WxO-6-o55juglU0DWNVQvvTPY',
-    authDomain: 'kevdemo-111.firebaseapp.com',
-    databaseURL: 'https://kevdemo-111.firebaseio.com',
-    projectId: 'kevdemo-111',
-    storageBucket: '',
-    messagingSenderId: '214483439746',
-    appId: '1:214483439746:web:f2069d818411bd4b46649b'
+    apiKey: "AIzaSyDiyBZ6Lo0BiNqCJEW6GbzbAHSzqT2horA",
+    authDomain: "votoire-ec754.firebaseapp.com",
+    databaseURL: "https://votoire-ec754.firebaseio.com",
+    projectId: "votoire-ec754",
+    storageBucket: "votoire-ec754.appspot.com",
+    messagingSenderId: "869485557727",
+    appId: "1:869485557727:web:d8ed2f31e7bd8b04ed366a"
   },
   versions: {
     app: packageJson.version,

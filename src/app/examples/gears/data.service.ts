@@ -9,6 +9,7 @@ import { State } from '../examples.state';
 import { tap, map, take, withLatestFrom } from 'rxjs/operators';
 import { Logo } from '../crud/logos.model';
 import { ActionLogosUpsertAll } from '../crud/logos.actions';
+import { vote_key } from '../crud/vote.effects';
 
 @Injectable()
 export class DataService {
@@ -32,7 +33,7 @@ export class DataService {
   fireStoreVotes() {
     return this.afs
       .collection('votes')
-      .doc('pfZRTpwzPPCPCvgmLGTY')
+      .doc(vote_key)
       .valueChanges()
       .pipe(
         tap((data: any) => {
@@ -46,8 +47,8 @@ convertVote(obj,logo:Logo,auth,authEmail){
   if(auth){
     console.log("authEmail")
     console.log(authEmail)
-    if(authEmail+"-"+logo.id in obj[1].examples.votes.entities){
-      return   obj[1].examples.votes.entities[authEmail+"-"+logo.id].niveauDaccord
+    if(authEmail+"&;&"+logo.id in obj[1].examples.votes.entities){
+      return   obj[1].examples.votes.entities[authEmail+"&;&"+logo.id].niveauDaccord
     }
     else{
       return 0
@@ -55,8 +56,8 @@ convertVote(obj,logo:Logo,auth,authEmail){
 
   }
   else{
-    if("DEMO-"+logo.id in obj[1].examples.votes.entities){
-      return   obj[1].examples.votes.entities["DEMO-"+logo.id].niveauDaccord
+    if("DEMO&;&"+logo.id in obj[1].examples.votes.entities){
+      return   obj[1].examples.votes.entities["DEMO&;&"+logo.id].niveauDaccord
      }
      else{
        return 0
@@ -68,8 +69,8 @@ convertVoteCommentaire(obj,logo:Logo,auth,authEmail){
   if(auth){
     console.log("authEmail")
     console.log(authEmail)
-    if(authEmail+"-"+logo.id in obj[1].examples.votes.entities){
-      return   obj[1].examples.votes.entities[authEmail+"-"+logo.id].commentaire
+    if(authEmail+"&;&"+logo.id in obj[1].examples.votes.entities){
+      return   obj[1].examples.votes.entities[authEmail+"&;&"+logo.id].commentaire
     }
     else{
       return ""
@@ -77,8 +78,8 @@ convertVoteCommentaire(obj,logo:Logo,auth,authEmail){
 
   }
   else{
-    if("DEMO-"+logo.id in obj[1].examples.votes.entities){
-      return   obj[1].examples.votes.entities["DEMO-"+logo.id].commentaire
+    if("DEMO&;&"+logo.id in obj[1].examples.votes.entities){
+      return   obj[1].examples.votes.entities["DEMO&;&"+logo.id].commentaire
      }
      else{
        return ""
@@ -100,111 +101,45 @@ convertVoteCommentaire(obj,logo:Logo,auth,authEmail){
         }),
         withLatestFrom(this.store),
         map((obj: any) => {
-
-        let newEntities = {}
-        let newLogo = JSON.parse(JSON.stringify(obj[0].examples.logos))
-        /*
-        console.log("newLogo")
-        console.log(newLogo)
-        console.log("obj")
-        console.log(obj)
-        */
+          if(obj[0].examples){
+            let newEntities = {}
+            let newLogo = JSON.parse(JSON.stringify(obj[0].examples.logos))
 
 
 
+            let tab = newLogo.ids.map((id => newLogo.entities[id] ))
+            if(obj[1].auth.isAuthenticated){
+              tab.map((logo => {
+                logo.niveauDaccord = this.convertVote(obj,logo,true,obj[1].auth.email)
+                logo.commentaire = this.convertVoteCommentaire(obj,logo,true,obj[1].auth.email)
+                newEntities[logo.id]= logo
+              }))
+            }
+            else{
+              tab.map((logo => {
+                logo.niveauDaccord = this.convertVote(obj,logo,false,"")
+                logo.commentaire = this.convertVoteCommentaire(obj,logo,false,"")
 
+                newEntities[logo.id]= logo
+              }))
+            }
 
-/*
-
-          let xs = newLogo.ids.map((id)=>
-          {
-            newLogo.entities[id].x
-          })
-
-          let debut   = xs.filter((x)=>{
-
-            return x == 200
-
-          }).length == 0
-
-        newLogo.ids.map((id)=>
-        {
-          //lag
-          if(!debut && (id in this.lastX  && this.lastX[id] > newLogo.entities[id].x)){
-            newLogo.entities[id].x = this.lastX[id]
+            newLogo.entities = newEntities
+            return newLogo
+          }
+          else{
+            return []
           }
 
-        })
 
-        newLogo.ids.map((id)=>
-        {
-          this.lastX[id] = newLogo.entities[id].x
-
-        })
-
-*/
-
-        let tab = newLogo.ids.map((id => newLogo.entities[id] ))
-        if(obj[1].auth.isAuthenticated){
-          tab.map((logo => {
-            logo.niveauDaccord = this.convertVote(obj,logo,true,obj[1].auth.email)
-            logo.commentaire = this.convertVoteCommentaire(obj,logo,true,obj[1].auth.email)
-            newEntities[logo.id]= logo
-          }))
-        }
-        else{
-          tab.map((logo => {
-            logo.niveauDaccord = this.convertVote(obj,logo,false,"")
-            logo.commentaire = this.convertVoteCommentaire(obj,logo,false,"")
-
-            newEntities[logo.id]= logo
-          }))
-        }
-
-        newLogo.entities = newEntities
-
-        return newLogo
       }),
 
-        map((obj: any) => obj.entities),
+      map((obj: any) => obj.entities),
 
-        map(entities => {
-          return Object.keys(entities).map((k: string) => entities[k]);
-        }),
-        /*
-      map((books:Book[]) => {
-        console.log("books11");
-        console.log(books);
-        return books.map((book:Book)=>{
-          let leVote = null
-          if(book.votes){
-            leVote = book.votes.filter((vote)=>{
-              return vote.nom == this.authName
-            })
-          }
-          else{
-            leVote = []
-          }
+      map(entities => {
+        return (entities)?Object.keys(entities).map((k: string) => entities[k]):[]
+      }),
 
-
-          let vote:Vote = null
-          if(leVote.length > 0){
-            vote = leVote[0]
-            book.niveauDaccord = vote.niveauDaccord
-            book.commentaire = vote.commentaire
-            book.style = this.getColor(vote.niveauDaccord)
-          }
-          else{
-            book.commentaire = ""
-            book.niveauDaccord = 0
-            book.style = ""
-          }
-
-          return book
-        })
-      })
-      ,
-      */
       tap(logos => {
 
           let logos3 = JSON.parse(JSON.stringify(logos))

@@ -13,6 +13,7 @@ import { of } from 'rxjs';
 import { ActionLogosUpsertOne, ActionLogosUpsertAll, ActionLogosUpsertOneLocal, ActionLogosUpsertAllFromVote } from './logos.actions';
 import { Logo } from './logos.model';
 
+export const vote_key = "6x9IhcIg7bfpiKquRW7A"
 export const TODOS_KEY = 'EXAMPLES.TODOS';
 
 @Injectable()
@@ -76,6 +77,8 @@ export class VotesEffects {
 
           console.log('loglogIdTempId');
           console.log(logIdTemp);
+          console.log('votes2.entities[voteId].logo');
+          console.log(votes2.entities[voteId].logo);
           if (logIdTemp == votes2.entities[voteId].logo) {
             let vote = votes2.entities[voteId];
             console.log(vote);

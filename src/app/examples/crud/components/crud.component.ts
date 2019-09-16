@@ -53,6 +53,7 @@ export class CrudComponent {
   authName$: Observable<any>;
   authName: string;
   vote: Vote;
+  votes: any;
   static createLogo(): Logo {
     return {
       id: uuid(),
@@ -169,6 +170,32 @@ export class CrudComponent {
     this.isEditing = false;
 
     this.selectedLogo = logo.id;
+    this.store.pipe(take(1)).subscribe(
+      (state:State)=>{
+        console.log("lauch state");
+        console.log(state);
+
+        let votes1 = Object.keys(state.examples.votes).map((key)=>state.examples.votes[key])
+        console.log("vote1")
+        console.log(votes1)
+        let votesIds = votes1[0].filter((id1:any)=>{
+
+          let splited = id1.split("&;&")
+
+          let tabLength = splited.length
+
+          let id = splited[tabLength - 1]
+
+          return id == logo.id
+        })
+
+        this.votes = votesIds.map((id)=>{
+          return votes1[1][id]
+        })
+        console.log(" this.votes")
+        console.log( this.votes)
+
+      })
 
     this.router.navigate(['app/crud', this.selectedLogo]);
   }
@@ -191,7 +218,7 @@ export class CrudComponent {
           this.store.dispatch(
             new ActionVoteUpsertOne({
               vote: {
-                id: this.authName + '-' + logo.id,
+                id: this.authName + '&;&' + logo.id,
                 nom: this.authName,
                 logo: logo.id,
                 niveauDaccord: logo.niveauDaccord,

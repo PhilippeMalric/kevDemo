@@ -37,8 +37,10 @@ export function voteReducer(
         console.log(state)
         console.log('action.payload.votes');
         console.log(action.payload.votes);
-        let votes: any = action.payload.votes.ids.map((id)=>action.payload.votes.entities[id])
-
+        let votes: any = []
+        if(Object.entries(action.payload).length === 0 && action.payload.constructor === Object  ){
+          votes = action.payload.votes.ids.map((id)=>action.payload.votes.entities[id])
+        }
       return voteAdapter.upsertMany(votes, state);
 
     case VoteActionTypes.UPSERT_ALL2:

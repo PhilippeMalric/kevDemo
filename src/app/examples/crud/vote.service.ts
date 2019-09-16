@@ -9,6 +9,7 @@ import {
 import { tap, map } from 'rxjs/operators';
 import { selectJeuxState } from './vote.selectors';
 import { Vote } from './vote.model';
+import { vote_key } from './vote.effects';
 
 @Injectable({
   providedIn: 'root'
@@ -73,7 +74,7 @@ modifyCartesToFirebase(id,carte:Votes){
     const collection: AngularFirestoreCollection<Vote> = this.af.collection(
       'votes'
     );
-    collection.doc('pfZRTpwzPPCPCvgmLGTY').update(votes);
+    collection.doc(vote_key).update(votes);
 
     //collection.add(carte)
 
