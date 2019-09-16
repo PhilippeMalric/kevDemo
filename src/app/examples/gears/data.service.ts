@@ -162,7 +162,9 @@ getVotesSubject(){
       console.log("SubjectV")
       console.log(v)
 
-       this.votes$= this.store.pipe(take(1),map(
+       this.votes$= this.store.pipe(
+
+        map(
           (state:State)=>{
             console.log("lauch state");
             console.log(state);
@@ -178,18 +180,22 @@ getVotesSubject(){
               let tabLength = splited.length
 
               let id = splited[tabLength - 1]
-
-              return id == v.id
+              console.log("id")
+              console.log(id)
+              return id == v
             })
-
+            console.log("votes1")
+            console.log(votes1[1])
             let votes = votesIds.map((id)=>{
+              console.log(votes1[1][id])
               return votes1[1][id]
             })
             console.log("votes")
             console.log(votes)
             return votes
 
-          }))
+            })
+          )
         }
       });
 }

@@ -146,11 +146,14 @@
 
       <ng-container *ngIf="!isEditing">
         <div [ngClass]="routeAnimationsElements" *ngIf="selectedLogo$ | async as selectedLogo; else noselectedLogoTmpl">
-          <h3>{{ selectedLogo.texte }}</h3>
-          <mat-card *ngFor="let vote of votes">
+          <h3  [ngClass]="routeAnimationsElements">{{ selectedLogo.texte }}</h3>
+          <h4  [ngClass]="routeAnimationsElements"> Les commentaires : </h4>
+          <mat-card *ngFor="let vote of dataS.votes$|async">
             <mat-card-title>{{vote.nom}}</mat-card-title>
             <mat-card-content>{{vote.commentaire}}</mat-card-content>
+            <mat-card-subtitle>Note : {{vote.niveauDaccord}}/5</mat-card-subtitle>
           </mat-card>
+
         </div>
 
         <ng-template #noselectedLogoTmpl>

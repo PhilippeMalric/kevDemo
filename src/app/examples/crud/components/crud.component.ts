@@ -45,7 +45,8 @@ export class CrudComponent {
   logoFormGroup = this.fb.group(CrudComponent.createLogo());
   myLogos$: Observable<Logo[]> = of([]);
   selectedLogo$: Observable<Logo> = this.store.pipe(
-    select(selectSelectedLogos)
+    select(selectSelectedLogos),
+    tap(()=> this.ref.markForCheck())
   );
   selectedLogo: string = null;
   isEditing: boolean;
@@ -75,7 +76,7 @@ export class CrudComponent {
     private router: Router,
     private jeuStore: Store<JeuState>,
     private voteStore: Store<VoteState>,
-    private dataS: DataService,
+    public dataS: DataService,
     private ref: ChangeDetectorRef,
   ) {
     this.votes = []
@@ -93,20 +94,35 @@ export class CrudComponent {
       tap((logos=>{
         console.log("Change logos")
         console.log(logos)
+        if(this.selectedLogo){
+          this.dataS.votesSubject.next(this.selectedLogo)
+        }
       }))
-
-
     )
+    if(this.selectedLogo){
+      this.dataS.votesSubject.next(this.selectedLogo)
+    }
     /*
       ,
       tap((books: Book[])=> {
 
         if (this.selectedBook){
-          this.router.navigate(['examples/crud',this.selectedBook])
+
         }
       })
       */
   }
+
+
+  ngOnInit(): void {
+
+    console.log("init")
+    if(this.selectedLogo){
+      this.dataS.votesSubject.next(this.selectedLogo)
+    }
+
+  }
+
   getColor(n: number) {
     let r = '';
     switch (n) {
@@ -130,7 +146,6 @@ export class CrudComponent {
   trackByIndex(index: number, obj: any): any {
     return index;
   }
-  ngOnInit(): void {}
 
   onInputChange(event, i) {
     console.log('event');
@@ -175,14 +190,28 @@ export class CrudComponent {
     this.isEditing = false;
 
     this.selectedLogo = logo.id;
-    this.dataS.votesSubject.next(logo)
+    this.dataS.votesSubject.next(this.selectedLogo)
     this.dataS.votes$.subscribe((votes:Vote[])=>{
       console.log("Votes!!")
       console.log(votes)
       this.votes = votes
       this.ref.markForCheck()
     })
-    this.router.navigate(['app/crud', this.selectedLogo]);
+    this.router.navigate(['app/crud/',this.selectedLogo])
+  }
+
+  select2(id: string) {
+    console.log('selected2');
+    this.isEditing = false;
+
+    this.selectedLogo = id;
+    this.dataS.votesSubject.next(this.selectedLogo)
+    this.dataS.votes$.subscribe((votes:Vote[])=>{
+      console.log("Votes!!")
+      console.log(votes)
+      this.votes = votes
+      this.ref.markForCheck()
+    })
   }
 
 
