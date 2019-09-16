@@ -1,3 +1,5 @@
+import{apiKey} from "../../apikey"
+
 const packageJson = require('../../package.json');
 
 export const environment = {
@@ -7,7 +9,7 @@ export const environment = {
   test: false,
   i18nPrefix: '',
   firebaseConfig: {
-    apiKey: "",
+    apiKey: apiKey,
     authDomain: "votoire-ec754.firebaseapp.com",
     databaseURL: "https://votoire-ec754.firebaseio.com",
     projectId: "votoire-ec754",

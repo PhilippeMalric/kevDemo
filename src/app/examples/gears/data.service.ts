@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Link } from '../d3';
 import { Node } from '../d3';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject, BehaviorSubject, of } from 'rxjs';
 import { Logos_KEY } from '../crud/logos.effects';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Store } from '@ngrx/store';
@@ -10,6 +10,7 @@ import { tap, map, take, withLatestFrom } from 'rxjs/operators';
 import { Logo } from '../crud/logos.model';
 import { ActionLogosUpsertAll } from '../crud/logos.actions';
 import { vote_key } from '../crud/vote.effects';
+import { Vote } from '../crud/vote.model';
 
 @Injectable()
 export class DataService {
@@ -21,6 +22,8 @@ export class DataService {
   lastX: Object;
   logoKey: Subject<string>;
 
+  votesSubject = new Subject<any>()
+  votes$: any;
   constructor(private afs: AngularFirestore, public store: Store<State>) {
     this.logoKey = new BehaviorSubject<string>(Logos_KEY);
     this.lastX = {}
@@ -152,4 +155,47 @@ convertVoteCommentaire(obj,logo:Logo,auth,authEmail){
          //this.store.dispatch(new ActionLogosUpsertAll({ logos: logos3 }));
         }));
   }
+
+getVotesSubject(){
+  this.votesSubject.subscribe({
+    next: (v) => {
+      console.log("SubjectV")
+      console.log(v)
+
+       this.votes$= this.store.pipe(take(1),map(
+          (state:State)=>{
+            console.log("lauch state");
+            console.log(state);
+            console.log("v");
+            console.log(v);
+            let votes1 = Object.keys(state.examples.votes).map((key)=>state.examples.votes[key])
+            console.log("vote1")
+            console.log(votes1)
+            let votesIds = votes1[0].filter((id1:any)=>{
+
+              let splited = id1.split("&;&")
+
+              let tabLength = splited.length
+
+              let id = splited[tabLength - 1]
+
+              return id == v.id
+            })
+
+            let votes = votesIds.map((id)=>{
+              return votes1[1][id]
+            })
+            console.log("votes")
+            console.log(votes)
+            return votes
+
+          }))
+        }
+      });
 }
+}
+
+/*
+
+
+*/

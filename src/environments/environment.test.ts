@@ -1,4 +1,5 @@
 const packageJson = require('../../package.json');
+import{apiKey} from "../../apikey"
 
 export const environment = {
   appName: 'Angular Ngrx Material Starter',
@@ -7,7 +8,7 @@ export const environment = {
   test: true,
   i18nPrefix: '',
   firebaseConfig: {
-    apiKey: "",
+    apiKey: apiKey,
     authDomain: "votoire-ec754.firebaseapp.com",
     databaseURL: "https://votoire-ec754.firebaseio.com",
     projectId: "votoire-ec754",

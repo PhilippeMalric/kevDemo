@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 
 import { selectEmail } from "../../../core/auth/auth.selectors"
@@ -54,6 +54,7 @@ export class CrudComponent {
   authName: string;
   vote: Vote;
   votes: any;
+
   static createLogo(): Logo {
     return {
       id: uuid(),
@@ -74,8 +75,12 @@ export class CrudComponent {
     private router: Router,
     private jeuStore: Store<JeuState>,
     private voteStore: Store<VoteState>,
-    private dataS: DataService
+    private dataS: DataService,
+    private ref: ChangeDetectorRef,
   ) {
+    this.votes = []
+    this.dataS.getVotesSubject()
+
     this.authName$ = this.store.pipe(select(selectEmail));
     this.authName$.pipe(take(1)).subscribe(user => {
       this.authName = user;
@@ -170,33 +175,13 @@ export class CrudComponent {
     this.isEditing = false;
 
     this.selectedLogo = logo.id;
-    this.store.pipe(take(1)).subscribe(
-      (state:State)=>{
-        console.log("lauch state");
-        console.log(state);
-
-        let votes1 = Object.keys(state.examples.votes).map((key)=>state.examples.votes[key])
-        console.log("vote1")
-        console.log(votes1)
-        let votesIds = votes1[0].filter((id1:any)=>{
-
-          let splited = id1.split("&;&")
-
-          let tabLength = splited.length
-
-          let id = splited[tabLength - 1]
-
-          return id == logo.id
-        })
-
-        this.votes = votesIds.map((id)=>{
-          return votes1[1][id]
-        })
-        console.log(" this.votes")
-        console.log( this.votes)
-
-      })
-
+    this.dataS.votesSubject.next(logo)
+    this.dataS.votes$.subscribe((votes:Vote[])=>{
+      console.log("Votes!!")
+      console.log(votes)
+      this.votes = votes
+      this.ref.markForCheck()
+    })
     this.router.navigate(['app/crud', this.selectedLogo]);
   }
 
