@@ -7,7 +7,7 @@ export const environment = {
   test: true,
   i18nPrefix: '',
   firebaseConfig: {
-    apiKey: "AIzaSyDiyBZ6Lo0BiNqCJEW6GbzbAHSzqT2horA",
+    apiKey: "",
     authDomain: "votoire-ec754.firebaseapp.com",
     databaseURL: "https://votoire-ec754.firebaseio.com",
     projectId: "votoire-ec754",
