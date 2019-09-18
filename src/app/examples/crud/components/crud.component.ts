@@ -152,23 +152,13 @@ export class CrudComponent {
     console.log(event);
 
 
-
-    if(event.value){
-      this.store.dispatch(new ActionLogosChangeONENiveau({niveau:event.value,id:i}))
-    }
-   /*
     this.myLogos$.pipe(take(1)).subscribe(
       (logos:any[])=>{
-        console.log("event.value")
-        console.log(event.value)
         let logo = JSON.parse(JSON.stringify(logos[i]))
         logo.niveauDaccord = event.value;
-
-
-          return 1
-      }
+        this.store.dispatch(new ActionLogosUpsertOneLocal({logo:logo}))
+    }
     )
-*/
   }
 
   onTextInputChange(event, i) {

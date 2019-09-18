@@ -73,6 +73,7 @@ export function logoReducer(
     case LogoActionTypes.UpsertAllFromVote:
         return logoAdapter.upsertMany(action.payload.logos, state);
 
+    /*
     case LogoActionTypes.WIN:
         console.log('CHANGE NIVEAU');
         console.log(action.payload["niveau"]);
@@ -89,7 +90,7 @@ export function logoReducer(
         else{
           return state
         }
-
+*/
     case LogoActionTypes.DELETE_ONE:
       return logoAdapter.removeOne(action.payload.id, state);
 

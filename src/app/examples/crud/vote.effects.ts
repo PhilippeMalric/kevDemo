@@ -134,6 +134,56 @@ export class VotesEffects {
     )
   );
 
+
+  @Effect({ dispatch: true })
+  addVotesAll2 = this.actions$.pipe(
+    ofType(VoteActionTypes.Calculate),
+    withLatestFrom(this.store),
+    map(([data, store]) => {
+      console.log('data UPSERT_ALL');
+      console.log(data);
+
+      console.log('store UPSERT_ALL');
+      console.log(store);
+
+
+
+      let logos2 = JSON.parse(JSON.stringify(store.examples.logos));
+      let votes2 = JSON.parse(JSON.stringify(store.examples.votes));
+
+      let avgDict = {}
+
+      for(let logIdTemp of logos2.ids){
+        let tabNiveau = [];
+        for (let voteId of votes2.ids) {
+
+          console.log('loglogIdTempId');
+          console.log(logIdTemp);
+          console.log('votes2.entities[voteId].logo');
+          console.log(votes2.entities[voteId].logo);
+          if (logIdTemp == votes2.entities[voteId].logo) {
+            let vote = votes2.entities[voteId];
+            console.log(vote);
+            tabNiveau.push(vote.niveauDaccord);
+          }
+        }
+        avgDict[logIdTemp] = this.getAvg(tabNiveau);
+        logos2.entities[logIdTemp].avg = avgDict[logIdTemp]
+
+      }
+
+      let newLogos: { logos: Logo[] } = {
+        logos: logos2.ids.map((id)=>logos2.entities[id])
+      };
+
+      console.log('newLogos');
+      console.log(newLogos);
+
+      return new ActionLogosUpsertAllFromVote(newLogos)
+
+    })
+  )
+
   getNiveau = (id: any, store) => {
     return store.examples.votes.entities[id].niveauDaccord;
   };

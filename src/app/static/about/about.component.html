@@ -6,6 +6,8 @@
         <h2 *ngIf="authName$ | async"  [ngClass]="routeAnimationsElements">Bienvenue, {{authName$ | async}}</h2>
       </div>
     </div>
-    <img class="intro" src="assets/intro.jpg"/>
-
+    <img class="intro routeAnimationsElements" src="assets/intro.jpg"/>
+<h1 id="perspective" [ngClass]="routeAnimationsElements" >Tout est une question de perspective.</h1>
+<h2 [ngClass]="routeAnimationsElements">Identification</h2>
+<h5 id="identification" [ngClass]="routeAnimationsElements" >Pour vous identifier, vous avez deux choix. Si vous avez un compte gmail, cliquez sur le G de Google, en haut à droite. Sinon cliquez sur le petit bonhome à côté pour vous enregistrer, un courriel vous sera envoyé pour être certain que c'est vous, répondez-lui. Ensuite, vous pourrez vous identifier (sur la page d'authentification).</h5>
 </div>

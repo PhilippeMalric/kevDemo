@@ -10,7 +10,7 @@ export enum VoteActionTypes {
   RESET = '[vote] Reset',
   DELETE_ONE = '[vote] Delete_one_carte',
   VoteForId = '[vote] new_Vote',
-  Calculate= '[logos] WIN',
+  Calculate= '[FromLogosUpsertAll] calculateVote',
 }
 
 export class ActionVoteCalculate implements Action {
@@ -69,4 +69,5 @@ export type VoteActions =
   | ActionVoteUpsertAll
   | ActionVoteUpsertAllFromFirebase
   | ActionVoteUpsertAll2
-  | ActionVoteForId;
+  | ActionVoteForId
+  | ActionVoteCalculate;

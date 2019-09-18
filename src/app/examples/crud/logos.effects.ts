@@ -123,8 +123,7 @@ export class LogosEffects {
 @Effect({ dispatch: true })
 upsertAll = this.actions$.pipe(
   ofType(
-    LogoActionTypes.UPSERT_ALL,
-
+    LogoActionTypes.UPSERT_ALL
   ),
  map((action)=>{
    return new ActionVoteCalculate({})

@@ -311,6 +311,7 @@ center(){
 
   start() {
     this.fin = false;
+    /*
     let interval = setInterval(() => {
       if (!this.fin) {
         this.store.dispatch(
@@ -358,6 +359,7 @@ center(){
           }
 
           this.fin = true;
+
           this.store.dispatch(new ActionLogosAddWin(
             {logos:
             this.nodes.map((node)=>{
@@ -375,9 +377,10 @@ center(){
                 node.win
               )
 
-            })
             }
-          ))
+
+          )
+          )
           setTimeout(() => {
             this.reset()
           }, 10000);
@@ -387,6 +390,7 @@ center(){
         clearInterval(interval);
       }
     }, 250);
+    */
   }
 
   reset() {
