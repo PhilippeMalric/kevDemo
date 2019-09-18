@@ -9,9 +9,14 @@ export enum VoteActionTypes {
   UPDATE = '[vote] Update',
   RESET = '[vote] Reset',
   DELETE_ONE = '[vote] Delete_one_carte',
-  VoteForId = '[vote] new_Vote'
+  VoteForId = '[vote] new_Vote',
+  Calculate= '[logos] WIN',
 }
 
+export class ActionVoteCalculate implements Action {
+  readonly type = VoteActionTypes.Calculate;
+  constructor(readonly payload: {}) {}
+}
 
 export class ActionVoteForId implements Action {
   readonly type = VoteActionTypes.VoteForId;

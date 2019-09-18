@@ -10,7 +10,8 @@ export enum LogoActionTypes {
   CHANGE_NIVEAU = '[logos] Change_niveau',
   UpsertAllFromVote = '[logos] Upsert All from vote',
   SAVE = '[logos] SAVE ONE',
-  WIN = '[logos] WIN'
+  WIN = '[logos] WIN',
+
 }
 
 export class ActionLogosUpsertOne implements Action {
@@ -63,6 +64,10 @@ export class ActionLogosAddWin implements Action {
   readonly type = LogoActionTypes.WIN;
   constructor(readonly payload: { logos: Logo[] }) {}
 }
+
+
+
+
 
 export type LogoActions =
   | ActionLogosUpsertOne

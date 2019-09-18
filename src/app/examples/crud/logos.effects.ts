@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Action, select, Store } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { tap, withLatestFrom, take } from 'rxjs/operators';
+import { tap, withLatestFrom, take, map } from 'rxjs/operators';
 
 import { LocalStorageService, selectAuth } from '@app/core';
 
@@ -15,6 +15,7 @@ import {
   AngularFirestore
 } from 'angularfire2/firestore';
 import { Router } from '@angular/router';
+import { ActionVoteUpdate, ActionVoteCalculate } from './vote.actions';
 
 export const Logos_KEY = '7CbwL8S27sEhVzM2ZIGw';
 export const DICT_uID_FB = 'l69Lh0zQOfsY1Sh8fLbx';
@@ -117,4 +118,17 @@ export class LogosEffects {
         });
     })
   );
+
+
+@Effect({ dispatch: true })
+upsertAll = this.actions$.pipe(
+  ofType(
+    LogoActionTypes.UPSERT_ALL,
+
+  ),
+ map((action)=>{
+   return new ActionVoteCalculate({})
+ })
+
+);
 }
