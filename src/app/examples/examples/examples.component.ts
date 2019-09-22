@@ -46,7 +46,8 @@ export class ExamplesComponent implements OnInit {
 
   examples = [
     { link: 'crud', label: 'Liste des items', auth: false },
-    { link: 'users-info', label: 'Liste des users', auth: false }
+    { link: 'users-info', label: 'Liste des utilisateurs', auth: false },
+    { link: 'pixbay', label: 'PixaBay', auth: false }
 
 ];
 

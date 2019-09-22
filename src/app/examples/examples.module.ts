@@ -29,6 +29,11 @@ import { VotesEffects } from './crud/vote.effects';
 import { UsersInfoComponent } from './users-info/users-info.component';
 import * as fromUsers from './users-info/users.reducer';
 import { UsersEffects } from './users-info/users.effects';
+import { PixabayComponent } from './pixabay/pixabay.component';
+import { CopyCBDirective } from './pixaBay/copy-cb.directive';
+
+
+
 @NgModule({
   imports: [
 
@@ -52,6 +57,7 @@ import { UsersEffects } from './users-info/users.effects';
     ])
   ],
   declarations: [
+    CopyCBDirective,
     GraphComponent,
     ...SHARED_VISUALS,
     ...D3_DIRECTIVES,
@@ -59,9 +65,11 @@ import { UsersEffects } from './users-info/users.effects';
     CrudComponent,
     AuthenticatedComponent,
     GearsComponent,
-    UsersInfoComponent
+    UsersInfoComponent,
+    PixabayComponent
   ],
-  providers: [JeuServiceService]
+  providers: [JeuServiceService],
+  exports: [PixabayComponent]
 })
 export class ExamplesModule {
   constructor() {}

@@ -6,8 +6,10 @@ import { AuthGuardService } from '@app/core';
 import { ExamplesComponent } from './examples/examples.component';
 import { AuthenticatedComponent } from './authenticated/authenticated.component';
 import { CrudComponent } from './crud/components/crud.component';
+
 import { GearsComponent } from './gears/gears.component';
 import { UsersInfoComponent } from './users-info/users-info.component';
+import { PixabayComponent } from './pixabay/pixabay.component';
 
 const routes: Routes = [
   {
@@ -25,6 +27,11 @@ const routes: Routes = [
         data: { title: 'Liste de lecture' }
       },
       {
+        path: 'pixbay',
+        component: PixabayComponent,
+        data: { title: 'PixBay' }
+      },
+      {
         path: 'crud/:id',
         component: CrudComponent,
         data: { title: 'Liste de lecture' }
@@ -39,7 +46,7 @@ const routes: Routes = [
         component: UsersInfoComponent,
         data: { title: 'Users' }
       },
-      
+
     ]
   }
 ];

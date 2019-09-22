@@ -1,0 +1,18 @@
+.flexElement{
+
+  display: flex;
+  flex-direction: column;
+  flex-flow: wrap;
+  flex-basis: auto;
+
+
+}
+
+.wrap{
+  word-wrap: break-word;
+}
+
+/deep/ mat-card{
+  max-width: 300px;
+  margin:10px;
+}
